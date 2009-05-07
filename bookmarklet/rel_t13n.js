@@ -60,7 +60,7 @@ bookmarklet.showStatus = function(statusId, message, opt_timeToShow) {
     statusLabel.id = statusId;
     var isIE = navigator.userAgent.indexOf("MSIE") != -1;
     var position = isIE ? "absolute" : "fixed";
-    statusLabel.style.cssText = "z-index:1000; font-size: 16px; " + "background: #FFF1A8; position: " + position + "; top: 0";
+    statusLabel.style.cssText = "z-index:99; font-size: 18px; " + "background: #FFF1A8; position: " + position + "; top: 0";
     document.body.appendChild(statusLabel)
   }statusLabel.innerHTML = message;
   var docClientWidth = document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth;
