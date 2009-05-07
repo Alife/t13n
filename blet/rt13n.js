@@ -112,7 +112,7 @@ bookmarklet.contains = function(arr, element) {
   return false
 };var t13nBookmarklet = {};
 t13nBookmarklet.NAME = "t13nb";
-t13nBookmarklet.BASE_URL = "t13n.googlecode.com/svn/trunk/blet/";
+t13nBookmarklet.BASE_URL = "http://t13n.googlecode.com/svn/trunk/blet/";
 t13nBookmarklet.SCRIPT_URL = t13nBookmarklet.BASE_URL + "rt13n.js";
 t13nBookmarklet.SCRIPT_ID = "t13ns";
 t13nBookmarklet.STATUS_ID = "t13n";
