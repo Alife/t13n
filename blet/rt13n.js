@@ -112,8 +112,9 @@ bookmarklet.contains = function(arr, element) {
   return false
 };var t13nBookmarklet = {};
 t13nBookmarklet.NAME = "t13nb";
-t13nBookmarklet.BASE_URL = "http://t13n.googlecode.com/svn/trunk/blet/";
-t13nBookmarklet.SCRIPT_URL = t13nBookmarklet.BASE_URL + "rt13n.js";
+t13nBookmarklet.SCRIPT_BASE_URL = "http://t13n.googlecode.com/svn/trunk/blet/";
+t13nBookmarklet.IMAGE_BASE_URL = "http://t13n.googlecode.com/files/";
+t13nBookmarklet.SCRIPT_URL = t13nBookmarklet.SCRIPT_BASE_URL + "rt13n.js";
 t13nBookmarklet.SCRIPT_ID = "t13ns";
 t13nBookmarklet.STATUS_ID = "t13n";
 t13nBookmarklet.MESSAGE_LOADING = "Loading transliteration";
@@ -192,7 +193,7 @@ t13nBookmarklet.setElementStyle = function() {
   for(var i = 0;i < tbns.registeredElements.length;i++) {
     var element = tbns.registeredElements[i];
     if(!element.parentNode)continue;
-    element.style.backgroundImage = 'url("' + tbns.BASE_URL + tbns.lang + "_" + (tbns.control.isTransliterationEnabled() ? "e" : "d") + '.gif")';
+    element.style.backgroundImage = 'url("' + tbns.IMAGE_BASE_URL + tbns.lang + "_" + (tbns.control.isTransliterationEnabled() ? "e" : "d") + '.gif")';
     element.style.backgroundRepeat = "no-repeat";
     if(tbns.lang == "ar") {
       element.style.backgroundPosition = "100% 0%";
