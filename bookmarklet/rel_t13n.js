@@ -192,7 +192,7 @@ t13nBookmarklet.setElementStyle = function() {
   for(var i = 0;i < tbns.registeredElements.length;i++) {
     var element = tbns.registeredElements[i];
     if(!element.parentNode)continue;
-    element.style.backgroundImage = 'url("http://' + tbns.BASE_URL + tbns.lang + "_" + (tbns.control.isTransliterationEnabled() ? "e" : "d") + '.gif")';
+    element.style.backgroundImage = 'url("' + tbns.BASE_URL + tbns.lang + "_" + (tbns.control.isTransliterationEnabled() ? "e" : "d") + '.gif")';
     element.style.backgroundRepeat = "no-repeat";
     if(tbns.lang == "ar") {
       element.style.backgroundPosition = "100% 0%";
