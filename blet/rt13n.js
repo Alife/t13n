@@ -52,20 +52,24 @@ bookmarklet.loadCSS = function(id, src, ownerDocument) {
     bookmarklet.getHead(ownerDocument).appendChild(s)
   }
 };
+bookmarklet.lastTimeoutId = null;
 bookmarklet.showStatus = function(statusId, message, opt_timeToShow) {
   if(!document.body)return false;
   var statusLabel = document.getElementById(statusId);
   if(!statusLabel) {
     statusLabel = document.createElement("span");
     statusLabel.id = statusId;
-    var isIE = navigator.userAgent.indexOf("MSIE") != -1;
-    var position = isIE ? "absolute" : "fixed";
-    statusLabel.style.cssText = "z-index:99; font-size: 18px; " + "background: #FFF1A8; position: " + position + "; top: 0";
     document.body.appendChild(statusLabel)
-  }statusLabel.innerHTML = message;
+  }var isIE = navigator.userAgent.indexOf("MSIE") != -1;
+  var position = isIE ? "absolute" : "fixed";
+  statusLabel.style.cssText = "z-index: 99; font-size: 14px; font-weight: bold; " + "padding: 4px 6px 4px 6px; background: #FFF1A8; " + "position: " + position + "; top: 0";
+  statusLabel.innerHTML = message;
   var docClientWidth = document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth;
   statusLabel.style.left = (docClientWidth - statusLabel.clientWidth) / 2 + "px";
-  if(opt_timeToShow)window.setTimeout(function() {
+  if(bookmarklet.lastTimeoutId) {
+    window.clearTimeout(bookmarklet.lastTimeoutId);
+    bookmarklet.lastTimeoutId = null
+  }if(opt_timeToShow)bookmarklet.lastTimeoutId = window.setTimeout(function() {
     bookmarklet.clearStatus(statusId)
   }, opt_timeToShow);
   return true
@@ -120,16 +124,17 @@ t13nBookmarklet.STATUS_ID = "t13n";
 t13nBookmarklet.MESSAGE_LOADING = "Loading transliteration";
 t13nBookmarklet.MESSAGE_STILL_LOADING = "Still loading transliteration";
 t13nBookmarklet.MESSAGE_LOADED = "Transliteration loaded";
-t13nBookmarklet.MESSAGE_ENABLED = "Transliteration enabled";
-t13nBookmarklet.MESSAGE_DISABLED = "Transliteration disabled";t13nBookmarklet.initialized = false;
+t13nBookmarklet.MESSAGE_ENABLED = "Transliteration is now enabled. " + "To disable, click on the bookmarklet again";
+t13nBookmarklet.MESSAGE_DISABLED = "Transliteration has been disabled. " + "To enable, click on the bookmarklet again";t13nBookmarklet.initialized = false;
 t13nBookmarklet.loadURL = null;
 t13nBookmarklet.lang = null;
 t13nBookmarklet.control = null;
+t13nBookmarklet.backgroundTimerId = null;
 t13nBookmarklet.registeredElements = [];
 t13nBookmarklet.CSS_ID = "t13nCSS";
 t13nBookmarklet.CSS_URL = "http://www.google.com/uds/modules/elements/transliteration/api.css";
-t13nBookmarklet.MESSAGE_NOT_SUPPORTED = "Your browser is not supported. Supported on Chrome/Safari/IE7/FF3";
-t13nBookmarklet.MESSAGE_USAGE = "To enable transliteration, press OK and click on a textbox.\r\n" + "Or press Cancel to stop this operation.";
+t13nBookmarklet.MESSAGE_NOT_SUPPORTED = "Your browser is not supported. " + "Supported on Chrome 2+/Safari 4+/IE 6+/FF 3+";
+t13nBookmarklet.MESSAGE_USAGE = "Transliteration is enabled. Click on a textbox to start using it";
 t13nBookmarklet.KEYBOARD_SHORTCUT = "Ctrl+G";
 t13nBookmarklet.MESSAGE_TOOLTIP = "(Ctrl+G to toggle transliteration)";
 t13nBookmarklet.initBookmarklet = function() {
@@ -169,24 +174,26 @@ t13nBookmarklet.toggle = function(opt_lang) {
     tbns.control = new translitControlClass(options);
     tbns.control.addEventListener(translitControlClass.EventType.STATE_CHANGED, tbns.setElementStyle, tbns.control)
   }tbns.control.setLanguagePair(tns.LanguageCode.ENGLISH, tbns.lang);
+  if(tbns.control.isTransliterationEnabled()) {
+    window.clearInterval(t13nBookmarklet.backgroundTimerId);
+    t13nBookmarklet.backgroundTimerId = null
+  }else t13nBookmarklet.backgroundTimerId = window.setInterval(t13nBookmarklet.activeElementEnabler, 250);
+  tbns.control.toggleTransliteration()
+};
+t13nBookmarklet.activeElementEnabler = function() {
+  var tbns = t13nBookmarklet;
+  if(!tbns.control.isTransliterationEnabled())return;
   var activeTextField = bookmarklet.getActiveTextField();
-  if(!activeTextField) {
-    if(tbns.control.isTransliterationEnabled()) {
-      tbns.control.toggleTransliteration();
-      return
-    }if(confirm(tbns.MESSAGE_USAGE))window.setTimeout(function() {
-      tbns.toggle()
-    }, 3000);
-    return
-  }if(activeTextField.ownerDocument != document)bookmarklet.loadCSS(t13nBookmarklet.CSS_ID, t13nBookmarklet.CSS_URL, activeTextField.ownerDocument);
+  if(!activeTextField)return;
   if(!bookmarklet.contains(tbns.registeredElements, activeTextField))try {
+    if(activeTextField.ownerDocument != document)bookmarklet.loadCSS(t13nBookmarklet.CSS_ID, t13nBookmarklet.CSS_URL, activeTextField.ownerDocument);
     tbns.control.makeTransliteratable([activeTextField]);
     activeTextField.title = (activeTextField.title || "") + " " + tbns.MESSAGE_TOOLTIP;
     tbns.registeredElements.push(activeTextField);
     tbns.control.enableTransliteration();
     t13nBookmarklet.setElementStyle()
   }catch(e) {
-  }else tbns.control.toggleTransliteration()
+  }
 };
 t13nBookmarklet.setElementStyle = function() {
   var tbns = t13nBookmarklet;
@@ -202,7 +209,8 @@ t13nBookmarklet.setElementStyle = function() {
       element.style.backgroundPosition = "0% 0%";
       element.style.paddingLeft = "20px"
     }
-  }bookmarklet.showStatus(tbns.STATUS_ID, tbns.control.isTransliterationEnabled() ? tbns.MESSAGE_ENABLED : tbns.MESSAGE_DISABLED, 3000)
+  }if(tbns.control.isTransliterationEnabled())bookmarklet.showStatus(tbns.STATUS_ID, bookmarklet.getActiveTextField() ? tbns.MESSAGE_ENABLED : tbns.MESSAGE_USAGE, 3000);
+  else bookmarklet.showStatus(tbns.STATUS_ID, tbns.MESSAGE_DISABLED, 3000)
 };
 t13nBookmarklet.initBookmarklet();
 })();
