@@ -1,0 +1,668 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<!--
+Copyright 2009 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+you may obtain a copy of the License at
+
+        http:www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!--
+Bookmarklets that can enable Google transliteration on any textbox/textarea.
+-->
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+
+  <title>Type in Arabic using transliteration bookmarklet</title>
+  <base href="http://t13n.googlecode.com/svn/trunk/blet/docs/"/>
+  <style type="text/css">
+      .main {
+        font-family: Arial, Helvetica, Sans-serif;
+      }
+
+      .help {
+          font-family: Arial, Helvetica, Sans-serif;
+      }
+
+      .title {
+        font-size: 22px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-top: 1px solid rgb(51, 102, 204);
+        background-color: rgb(229, 236, 249);
+      }
+
+      .section {
+        font-size: 18px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-top: 1px solid rgb(51, 102, 204);
+        background-color: rgb(229, 236, 249);
+      }
+
+      .subsection {
+        font-size: 16px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-top: 1px solid rgb(51, 102, 204);
+        background-color: rgb(229, 236, 249);
+      }
+
+      .main .mainheader {
+          border-top: 1px solid rgb(51, 102, 204);
+          background-color: rgb(229, 236, 249);
+      }
+
+      .help .helpheader {
+          margin-bottom: 25px;
+      }
+
+      .help .toc {
+          font-size: 12px;
+          margin: 0;
+          border: 0;
+          padding: 0;
+          list-style: none;
+      }
+
+      .help .toc li {
+          padding-bottom: 10px;
+      }
+
+      .help .helptext {
+        font-size: small;
+      }
+  </style>
+  <script type="text/javascript" src=
+  "http://t13n.googlecode.com/svn/trunk/blet/rmanager.js">
+  </script>
+  <script type="text/javascript" src=
+  "http://t13n.googlecode.com/svn/trunk/blet/rt13nloader.js">
+  </script>
+</head>
+
+<body class="main">
+  <div>
+    <h2 class="mainheader title">
+    <img src="http://t13n.googlecode.com/files/help_ar_e.gif"
+        style="vertical-align:middle" alt="Arabic Help icon">
+    Type in Arabic using transliteration bookmarklet
+    </h2>
+  </div>
+  <div class="help" style="font-size: 12px">
+    This page provides information on Arabic bookmarklet. For other
+    languages, use the appropriate link:
+    <span style="display: none">
+        <a href="help_ar.html">Arabic</a>
+    &nbsp;</span>
+    <span style="display: ">
+        <a href="help_hi.html">Hindi</a>
+    &nbsp;</span>
+    <span style="display: ">
+        <a href="help_kn.html">Kannada
+    &nbsp;</a></span>
+    <span style="display: ">
+        <a href="help_ml.html">Malayalam
+    &nbsp;</a></span>
+    <span style="display: ">
+        <a href="help_ta.html">Tamil
+    &nbsp;</a></span>
+    <span style="display: ">
+        <a href="help_te.html">Telugu
+    </a></span>
+  </div>
+  <br><br>
+
+  <div class="help">
+      <ul class="toc">
+        <li><a href="#QuickGuide">Quick Guide</a></li>
+
+        <li><a href="#AboutTransliteration">About transliteration</a></li>
+
+        <li><a href="#AboutBookmarklet">About the transliteration
+        bookmarklet</a></li>
+
+        <li><a href="#Support">Supported languages and browsers</a></li>
+
+        <li><a href="#Store">Storing the transliteration bookmarklet</a></li>
+
+        <li><a href="#Use">Using the transliteration bookmarklet</a></li>
+
+        <li><a href="#FAQ">Frequently asked questions</a></li>
+
+        <li><a href="#Feedback">Feedback</a></li>
+
+        <li><a href="#Terms">Terms of use</a></li>
+      </ul>
+  </div>
+  <br>
+
+  <div class="help">
+      <h3 class="helpheader section"><a id=
+      "QuickGuide" href="#QuickGuide" name="QuickGuide">Quick Guide</a></h3>
+
+      <div class="helptext">
+        If you already know how to create a bookmarklet, bookmarklet this link:
+        <font size="+1">
+        <a id="transliteration_bookmark_ar_1" name=
+        "transliteration_bookmark_ar_1">
+        [&#1593; Type in Arabic]</a></font>.
+        NOTE: This is NOT same as clicking on the link.<br>
+        <br>
+        Done! You can now go to <a href="#Use">Using the transliteration
+        bookmarklet</a> section for details on how to use the bookmarklet.
+      </div>
+
+      <h3 class="helpheader section"><a id="AboutTransliteration" href=
+      "#AboutTransliteration" name="AboutTransliteration">About
+      transliteration</a></h3>
+
+      <div class="helptext">
+        Google Transliteration offers an option for converting English
+        characters to the characters used in Arabic. This lets you type
+        Arabic words phonetically in English script and then have them
+        appear in Arabic. Note that this is not the same as translation -
+        it is the sound of the words that are converted from one alphabet to
+        the other, not their meaning. For example, typing "ta3reeb"
+        transliterates into Arabic as &#x62A;&#x639;&#x631;&#x64A;&#x628;.
+      </div>
+
+      <h3 class="helpheader section"><a id="AboutBookmarklet" href=
+      "#AboutBookmarklet" name="AboutBookmarklet">About the transliteration
+      bookmarklet</a></h3>
+
+      <div class="helptext">
+        Ever visited a web-site and wanted to type in Arabic but did not
+        find transliteration feature there? Now you can use this bookmarklet to
+        type in Arabic on any web-site.<br>
+        <br>
+        Transliteration <a href=
+        "http://en.wikipedia.org/wiki/Bookmarklet">bookmarklet</a> is a small
+        piece of code that you store in your browser. Once stored, you can type
+        in Arabic in any text box in any web-site of your choice. It works
+        on Google web-sites as well as other web-sites.<br>
+        <br>
+        For example, you can use the bookmarklet to chat in Arabic in
+        <a href="http://www.gmail.com">Gmail</a> or edit a Arabic <a href=
+        "http://ar.wikipedia.org">Wikipedia</a> article. You can use it
+        to search for Arabic news in <a href=
+        "http://news.google.com">Google news</a> or search for Arabic
+        information on <a href="http://www.google.com">Google search</a>.<br>
+        <br>
+        Note that you do not need to use the bookmarklet to
+        type in <a href='http://www.google.com/transliterate/arabic'>Labs page</a> or use in <a href='http://www.google.com/ig/adde?moduleurl=www.google.com/ig/modules/arabic_transliteration.xml_GOOGLEINTEGRATIONS_hl=en'>iGoogle</a> gadget. Transliteration is built-in in these web-sites.
+      </div>
+
+      <h3 class="helpheader section"><a id="Support" href="#Support" name=
+      "Support">Supported languages and browsers</a></h3>
+
+      <div class="helptext">
+        This document gives information on how to use the bookmarklet tool to
+        type in Arabic. Transliteration bookmarklet is also available for
+        other languages. To know more, click on the appropriate link
+        below:
+
+        <ul>
+          <li style="display: none">Bookmarklet for <a href=
+          "help_ar.html">Arabic</a>.</li>
+
+          <li style="display: ">Bookmarklet for <a href=
+          "help_hi.html">Hindi</a>.</li>
+
+          <li style="display: ">Bookmarklet for <a href=
+          "help_kn.html">Kannada</a>.</li>
+
+          <li style="display: ">Bookmarklet for <a href=
+          "help_ml.html">Malayalam</a>.</li>
+
+          <li style="display: ">Bookmarklet for <a href=
+          "help_ta.html">Tamil</a>.</li>
+
+          <li style="display: ">Bookmarklet for <a href=
+          "help_te.html">Telugu</a>.</li>
+        </ul>
+        The transliteration bookmarklet is supported on Internet Explorer 6 and
+        above, Firefox 3 and above, Chrome 2
+        <span style="display: "> and Safari 4</span>.
+      </div>
+
+      <h3 class="helpheader section"><a id="Store" href="#Store" name=
+      "Store">Storing the transliteration bookmarklet</a></h3>
+
+      <div class="helptext">
+        For detailed steps on storing the bookmarklet, use the appropriate link
+        below. Note that you need to follow these steps only once.<br>
+        <br>
+        <blockquote>
+        <ul class="help toc">
+          <li><a href="#StoreIE">
+          <img src="images/ie/ie.jpg" style="vertical-align:middle" alt=
+          "IE icon">&nbsp;Steps for Internet Explorer users.</a></li>
+
+          <li><a href="#StoreFF">
+          <img src="images/ff/firefox.jpg" style="vertical-align:middle"
+          alt="Firefox icon">&nbsp;Steps for Firefox users.</a></li>
+
+          <li><a href="#StoreChrome">
+          <img src="images/chrome/chrome.jpg" style="vertical-align:middle"
+          alt="Chrome icon">&nbsp;Steps for Chrome users.</a></li>
+
+          <li style="display: "><a href="#StoreSafari">
+          <img src="images/safari/safari.jpg" style="vertical-align:middle"
+          alt="Safari icon">&nbsp;Steps for Safari users.</a></li>
+        </ul>
+        </blockquote>
+
+        <h4 class="helpheader subsection"><a id="StoreIE" href="#StoreIE" name=
+        "StoreIE">Storing transliteration bookmarklet on Internet
+        Explorer</a></h4>
+
+        <div class="helptext">
+          Note: Transliteration bookmarklet is supported on Internet Explorer
+          version 6 and above. If you come across font issues, see <a href=
+          "http://en.wikipedia.org/wiki/Arabic_alphabet"> this Wikipedia</a> article for possible solutions.<br>
+          <br>
+          Perform the following steps:
+
+          <ol>
+            <li>Right-click this link: <font size="+1"><a id=
+            "transliteration_bookmark_ar_2" name=
+            "transliteration_bookmark_ar_2">
+            [&#1593; Type in Arabic]</a></font>.<br>
+
+            <br></li>
+
+            <li>Select "Add to Favorites".<br>
+            <br>
+            <img src="images/ie/ie_add_to_favorites.jpg" alt=
+            "Adding bookmarklet to favorites in IE"><br>
+            <br></li>
+
+            <li>Click "Yes" for the security message shown by Internet
+            Explorer.<br>
+            <br>
+            <img src="images/ie/ie_security_message.jpg" alt=
+            "IE security message for Javascript: URL"><br>
+            <br></li>
+
+            <li>Choose "Links" as the directory where the bookmarklet should be
+            created.<br>
+            <br>
+            <img src="images/ie/ie_select_links_ar.jpg" alt=
+            "Selecting Links folder for bookmarklet"><br>
+            <br></li>
+
+            <li>Click "Add".</li>
+          </ol><br>
+          After following the above steps, a bookmark with name
+          <font size="+1">[&#1593; Type in Arabic]</font> should appear in the
+          Internet Explorer Links toolbar as follows:<br>
+          <br>
+
+          <blockquote>
+            <img src="images/ie/ie_links_ar.jpg" alt=
+            "Links toolbar in IE">
+          </blockquote>
+          <br>
+          Done! You can now go to <a href="#Use">Using the transliteration
+          bookmarklet</a> section for details on how to use the
+          bookmarklet.<br>
+          <br><br><br>
+          If you do not see the the bookmark, follow these additional steps:
+
+          <ol>
+            <li>Make sure that the Links toolbar is visible. Right-click on
+            empty space in Internet Explorer toolbar area and confirm that the
+            Links toolbar is checked:<br>
+            <br>
+            <img src="images/ie/ie_ensure_linksvisible.jpg" alt=
+            "Ensuring Links toolbar is visible"><br>
+            <br></li>
+
+            <li>Make sure that the toolbars are unlocked. To unlock toolbar,
+            right-click on empty space in Internet Explorer toolbar area and
+            uncheck the "Lock the Toolbars" option.<br>
+            <br>
+            <img src="images/ie/ie_unlock_toolbars.jpg" alt=
+            "Unlocking toolbars in IE"><br>
+            <br></li>
+
+            <li>Drag the Links toolbar to left side. Your toolbar will now look
+            like:<br>
+            <br>
+            <img src="images/ie/ie_links_ar.jpg" alt=
+            "Dragging links toolbar in IE"></li>
+          </ol>
+        </div>
+
+        <h4 class="helpheader subsection"><a id="StoreFF" href="#StoreFF" name=
+        "StoreFF">Storing transliteration bookmarklet on Firefox</a></h4>
+
+        <div class="helptext">
+          Note: Transliteration bookmarklet is supported on Firefox version 3
+          and above. If you come across font issues, see <a href=
+          "http://en.wikipedia.org/wiki/Arabic_alphabet">this Wikipedia</a> article for possible
+          solutions.<br>
+          <br>
+          Perform the following steps:
+
+          <ol>
+            <li>Right-click this link: <font size="+1"><a id=
+            "transliteration_bookmark_ar_3" name=
+            "transliteration_bookmark_ar_3">
+            [&#1593; Type in Arabic]</a></font>.<br>
+
+            <br></li>
+
+            <li>Click on "Bookmark This Link".<br>
+            <br>
+            <img src="images/ff/ff_add_to_bookmarks.jpg" alt=
+            "Adding bookmarklet to Firefox toolbar"><br>
+            <br></li>
+
+            <li>Choose "Bookmarks Toolbar" in the "Folder" option.<br>
+            <br>
+            <img src="images/ff/ff_folder_option_ar.jpg" alt=
+            "Choosing Bookmarks toolbar in Firefox"><br>
+            <br></li>
+
+            <li>Click "Done".</li>
+          </ol>
+          <br>After following the above steps, a bookmark with name
+          <font size="+1">[&#1593; Type in Arabic]</font> should appear in the Firefox
+          Bookmark toolbar as follows:<br>
+          <br>
+          <blockquote>
+            <img src="images/ff/ff_bookmark_ar.jpg" alt=
+            "Firefox Bookmarks toolbar">
+          </blockquote>
+          <br>
+          Done! You can now go to <a href="#Use">Using the transliteration
+          bookmarklet</a> section for details on how to use the
+          bookmarklet.<br>
+          <br><br><br>
+          If you do not see the the bookmark, follow this additional step:<br>
+          <br>
+          Make sure that the Bookmarks toolbar is enabled. Right-click on the
+          empty space next to "Help" menu and click on the "Bookmarks Toolbar"
+          option:<br>
+          <br>
+
+          <blockquote>
+            <img src="images/ff/ff_ensure_bookmarksvisible.jpg" alt=
+            "Ensuring Bookmarks toolbar is visible in Firefox">
+          </blockquote>
+        </div>
+
+        <h4 class="helpheader subsection"><a id="StoreChrome" href=
+        "#StoreChrome" name="StoreChrome">Storing transliteration bookmarklet
+        on Chrome</a></h4>
+
+        <div class="helptext">
+          Note: Transliteration bookmarklet is supported on Chrome 2. If you
+          come across font issues, see <a href= "http://en.wikipedia.org/wiki/Arabic_alphabet">this
+          Wikipedia</a> article for possible solutions.<br>
+          <br>
+          Perform the following steps:
+          <ol>
+            <li>Press Ctrl+B so that the Bookmarks toolbar is always
+            visible.<br>
+            <br>
+            <img src='images/chrome/chrome_ensure_bookmarksvisible.jpg' alt=
+            "Ensuring Bookmarkls toolbar is visible in Chrome"><br>
+            <br></li>
+
+            <li>Drag this link: <font size="+1">
+            <a id="transliteration_bookmark_ar_4"
+               name="transliteration_bookmark_ar_4">
+              [&#1593; Type in Arabic]</a></font>
+            to the Bookmarks toolbar.</li>
+          </ol>
+          <br>After following the above steps, a bookmark with name
+          <font size="+1">[&#1593; Type in Arabic]</font> should appear
+          in the Chrome Bookmark toolbar as follows:<br>
+          <br>
+          <blockquote>
+            <img src="images/chrome/chrome_bookmark_ar.jpg" alt=
+            "Bookmarks toolbar display in Chrome">
+          </blockquote>
+          <br>
+          Done! You can now go to <a href="#Use">Using the transliteration
+          bookmarklet</a> section for details on how to use the
+          bookmarklet.<br>
+          <br>
+        </div>
+
+        <div style="display: ">
+        <h4 class="helpheader subsection"><a id="StoreSafari" href=
+        "#StoreSafari" name="StoreSafari">Storing transliteration bookmarklet
+        on Safari</a></h4>
+
+        <div class="helptext">
+          Note: Transliteration bookmarklet is supported on Safari 4. If you
+          come across font issues, see <a href= "http://en.wikipedia.org/wiki/Arabic_alphabet">this
+          Wikipedia</a> article for possible solutions.<br>
+          <br>
+          Perform the following steps:
+
+          <ol>
+            <li>Press Ctrl+Shift+B so that the Bookmarks toolbar is always
+            visible.<br>
+            <br>
+            <img src="images/safari/safari_ensure_bookmarksvisible.jpg" alt=
+            "Ensuring Bookmarks toolbar is visible in Chrome"><br>
+            <br></li>
+
+            <li>Drag this link <font size="+1">
+            <a id="transliteration_bookmark_ar_5"
+              name="transliteration_bookmark_ar_5">
+              [&#1593; Type in Arabic]</a></font>
+            to the Bookmarks toolbar.</li>
+          </ol>
+          <br>After following the above steps, a bookmark with name
+          <font size="+1">[&#1593; Type in Arabic]</font> should appear in the
+          Safari Bookmark toolbar as follows:<br>
+          <br>
+
+          <blockquote>
+            <img src="images/safari/safari_bookmark_ar.jpg" alt=
+            "Bookmarks toolbar display in Safari">
+          </blockquote><br>
+          <br>
+          Done! You can now go to <a href="#Use">Using the transliteration
+          bookmarklet</a> section for details on how to use the bookmarklet.
+        </div>
+        </div>
+
+        <h3 class="helpheader section"><a id="Use" href="#Use" name="Use">Using
+        the transliteration bookmarklet</a></h3>
+
+        <div class="helptext">
+          To type in Arabic in any web-site, follow these simple steps:
+          <br>
+          <ol>
+            <li>Click on the <font size="+1">[&#1593; Type in Arabic]</font> button in
+            Bookmarks toolbar. Wait till the message "Transliteration is
+            enabled ..." message is displayed. For example:<br>
+            <br><br>
+            <blockquote>
+                <img src="images/common/transliteration_news_ar.jpg" alt=
+                "Message when transliteration is enabled"><br>
+            </blockquote>
+            <br>
+            Note the "Transliteration is enabled ..." message. The message
+            informs us that transliteration is ready to use.<br>
+            <br></li>
+
+            <li>Click on any text box where you want to type in Arabic.
+            You will see a <img src="images/common/ar_e.gif"
+            alt= "Transliteration enabled icon"> icon in the text box. Now start
+            typing in English and words will be transliterated to
+            Arabic.<br><br></li>
+
+            <li>To stop typing in Arabic (i.e. to type in English), click on the
+            <font size="+1">[&#1593; Type in Arabic]</font> button again.
+            Alternatively, you can press Ctrl+G inside the text box to stop
+            typing in Arabic.<br>
+          </ol>
+          <br>
+
+          Here are some places where you can try it out:
+          <br><br>
+
+          <b>Chatting in Arabic in Gmail:</b><br>
+          <br>
+          <blockquote>
+              <img src="images/common/transliteration_chat_ar.jpg" alt=
+              "Using bookmarklet in Google Chat">
+          </blockquote>
+          <br><br><br>
+
+          <b>Editing a Arabic Wikipedia article:</b>
+          <br><br>
+          <blockquote>
+              <img src="images/common/transliteration_wiki_ar.jpg" alt=
+                "Using bookmarklet in Wikipedia">
+          </blockquote>
+          <br><br><br>
+
+          <b>Searching for Arabic articles in Google news:</b>
+          <br><br>
+          <blockquote>
+              <img src="images/common/transliteration_news_ar.jpg" alt=
+              "Using bookmarklet in Google News">
+          </blockquote>
+        </div>
+
+        <h3 class="helpheader section"><a id="FAQ" href="#FAQ" name=
+        "FAQ">Frequently asked questions</a></h3>
+
+        <div class="helptext">
+          <ol>
+            <li>What is a Transliteration bookmarklet ?<br>
+            <br>
+            Transliteration bookmarklet is a tool that helps you to type in
+            your language on any web-site. The tool uses the Google
+            transliteration service in the background.<br><br></li>
+
+            <li>Can I use this tool on web-sites other than Google's ?<br>
+            <br>
+            Yes. This bookmarklet can enable Typing in Arabic on any web-
+            site.<br><br></li>
+
+            <li>How do I use this tool ?<br>
+            <br>
+            See the <a href="#Store">Storing the transliteration
+            bookmarklet</a> and the <a href="#Use">Using the transliteration
+            bookmarklet</a> sections for detailed information.<br><br></li>
+
+            <li>Does my system support the bookmarklet tool?<br>
+            <br>
+            The bookmarklet tool is supported on Internet Explorer 6 and above,
+            Firefox 3 and above, Chrome 2
+            <span style="display: "> and Safari 4</span>.
+            <br><br></li>
+
+            <li>I created the bookmark but I cannot see it. Why?<br>
+            <br>
+            Please see the instructions in the <a href="#Store">Storing the
+            transliteration bookmarklet</a> for steps on creating the
+            bookmarklet and making sure that it is visible.<br><br></li>
+
+            <li>How do I switch ON transliteration or switch OFF
+            transliteration?<br>
+            <br>
+            You can switch ON transliteration by clicking on the
+            <font size="+1">[&#1593; Type in Arabic]</font> link in the Bookmarks
+            toolbar. You can switch OFF transliteration by clicking on the same
+            link again.<br>
+            <br>
+            To type in Arabic, you must switch ON transliteration and then
+            click on the text box where you want to type in Arabic.
+            <br><br></li>
+
+            <li>How do I know if transliteration is enabled ?<br>
+            <br>
+            When transliteration is enabled, you will see a <img src=
+            "images/common/ar_e.gif" alt=
+            "Transliteration enabled icon"> icon when you click on a text box.
+            If instead you see a <img src="images/common/ar_d.gif" alt=
+            "Transliteration disabled icon"> icon in the text box, then
+            transliteration is disabled.<br>
+            <br>
+            You can enable and disable transliteration by clicking on
+            <font size="+1">[&#1593; Type in Arabic]</font> in the toolbar.<br><br></li>
+
+            <li>I cannot see text in Arabic, but see empty boxes like
+            &#9744; instead - why ?<br>
+            <br>
+            This usually means that you browser or system does not have support
+            for Arabic. See <a href= "http://en.wikipedia.org/wiki/Arabic_alphabet">
+            this Wikipedia</a> article for more details.<br><br></li>
+
+            <li>Will transliteration work even without internet
+            connectivity?<br>
+            <br>
+            Transliteration requires a live internet connection, as all the
+            transliteration is done on Google's servers and sent back to your
+            browser while you continue typing. If you find that the English
+            words you type are not getting converted to Arabic, make sure
+            that transliteration is ON and then check your internet
+            connection.<br><br></li>
+
+            <li>I created the bookmarklet. How can I delete it?<br>
+            <br>
+            To delete the bookmarklet, right-click on it and select
+            "Delete".</li>
+          </ol>
+        </div>
+
+        <h3 class="helpheader section"><a id="Feedback" href="#Feedback" name=
+        "Feedback">Feedback</a></h3>
+
+        <div class="helptext">
+          To share your thoughts with us, please send them to the <a href=
+            "mailto:transliteration.team@gmail.com">
+            transliteration.team@gmail.com</a>.
+        </div>
+
+        <h3 class="helpheader section"><a id="Terms" href="#Terms" name=
+        "Terms">Terms of use</a></h3>
+
+        <div class="helptext">
+          This software is provided under the Apache 2.0 Licence. Please see
+          the <a href="http:t13n.googlecode.com/svn/trunk/COPYING">COPYING</a>
+          file for details.<br>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_ar_1', 't13nb', 'ar');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_ar_2', 't13nb', 'ar');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_ar_3', 't13nb', 'ar');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_ar_4', 't13nb', 'ar');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_ar_5', 't13nb', 'ar');
+    // Reset value of t13nb namespace so bookmarklet links can work on this
+    // page as well.
+    t13nb = undefined;
+  </script>
+</body>
+</html>
