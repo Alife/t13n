@@ -186,9 +186,17 @@ t13nBookmarklet.activeElementEnabler = function() {
   var activeTextField = bookmarklet.getActiveTextField();
   if(!activeTextField)return;
   if(!bookmarklet.contains(tbns.registeredElements, activeTextField))try {
+    activeTextField.style.paddingLeft = 0;
+    activeTextField.style.paddingRight = 0;
+    var contentWidth = activeTextField.clientWidth;
+    activeTextField.style.paddingLeft = "";
+    activeTextField.style.paddingRight = "";
+    activeTextField.setAttribute("t13nContentWidth", contentWidth);
     if(activeTextField.ownerDocument != document)bookmarklet.loadCSS(t13nBookmarklet.CSS_ID, t13nBookmarklet.CSS_URL, activeTextField.ownerDocument);
-    tbns.control.makeTransliteratable([activeTextField]);
-    activeTextField.title = (activeTextField.title || "") + " " + tbns.MESSAGE_TOOLTIP;
+    try {
+      tbns.control.makeTransliteratable([activeTextField])
+    }catch(e) {
+    }activeTextField.title = (activeTextField.title || "") + " " + tbns.MESSAGE_TOOLTIP;
     tbns.registeredElements.push(activeTextField);
     tbns.control.enableTransliteration();
     t13nBookmarklet.setElementStyle()
@@ -200,6 +208,7 @@ t13nBookmarklet.setElementStyle = function() {
   for(var i = 0;i < tbns.registeredElements.length;i++) {
     var element = tbns.registeredElements[i];
     if(!element.parentNode)continue;
+    var oldOffsetWidth = element.offsetWidth;
     element.style.backgroundImage = 'url("' + tbns.IMAGE_BASE_URL + tbns.lang + "_" + (tbns.control.isTransliterationEnabled() ? "e" : "d") + '.gif")';
     element.style.backgroundRepeat = "no-repeat";
     if(tbns.lang == "ar") {
@@ -208,6 +217,11 @@ t13nBookmarklet.setElementStyle = function() {
     }else {
       element.style.backgroundPosition = "0% 0%";
       element.style.paddingLeft = "20px"
+    }var newOffsetWidth = element.offsetWidth;
+    var contentWidth = parseInt(element.getAttribute("t13nContentWidth"));
+    if(oldOffsetWidth != newOffsetWidth) {
+      var boxSizeDifference = newOffsetWidth - oldOffsetWidth;
+      element.style.width = contentWidth - boxSizeDifference + "px"
     }
   }if(tbns.control.isTransliterationEnabled())bookmarklet.showStatus(tbns.STATUS_ID, bookmarklet.getActiveTextField() ? tbns.MESSAGE_ENABLED : tbns.MESSAGE_USAGE, 3000);
   else bookmarklet.showStatus(tbns.STATUS_ID, tbns.MESSAGE_DISABLED, 3000)
