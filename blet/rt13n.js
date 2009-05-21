@@ -117,6 +117,7 @@ bookmarklet.contains = function(arr, element) {
 };var t13nBookmarklet = {};
 t13nBookmarklet.NAME = "t13nb";
 t13nBookmarklet.SCRIPT_BASE_URL = "http://t13n.googlecode.com/svn/trunk/blet/";
+t13nBookmarklet.CSS_BASE_URL = t13nBookmarklet.SCRIPT_BASE_URL;
 t13nBookmarklet.IMAGE_BASE_URL = "http://t13n.googlecode.com/files/";
 t13nBookmarklet.SCRIPT_URL = t13nBookmarklet.SCRIPT_BASE_URL + "rt13n.js";
 t13nBookmarklet.SCRIPT_ID = "t13ns";
@@ -124,7 +125,7 @@ t13nBookmarklet.STATUS_ID = "t13n";
 t13nBookmarklet.MESSAGE_LOADING = "Loading transliteration";
 t13nBookmarklet.MESSAGE_STILL_LOADING = "Still loading transliteration";
 t13nBookmarklet.MESSAGE_LOADED = "Transliteration loaded";
-t13nBookmarklet.MESSAGE_ENABLED = "Transliteration is now enabled. " + "To disable, click on the bookmarklet again";
+t13nBookmarklet.MESSAGE_ENABLED = "Transliteration is enabled. " + "To disable, click on the bookmarklet again";
 t13nBookmarklet.MESSAGE_DISABLED = "Transliteration has been disabled. " + "To enable, click on the bookmarklet again";t13nBookmarklet.initialized = false;
 t13nBookmarklet.loadURL = null;
 t13nBookmarklet.lang = null;
@@ -132,7 +133,7 @@ t13nBookmarklet.control = null;
 t13nBookmarklet.backgroundTimerId = null;
 t13nBookmarklet.registeredElements = [];
 t13nBookmarklet.CSS_ID = "t13nCSS";
-t13nBookmarklet.CSS_URL = "http://www.google.com/uds/modules/elements/transliteration/api.css";
+t13nBookmarklet.CSS_URL = t13nBookmarklet.CSS_BASE_URL + "api.css";
 t13nBookmarklet.MESSAGE_NOT_SUPPORTED = "Your browser is not supported. " + "Supported on Chrome 2+/Safari 4+/IE 6+/FF 3+";
 t13nBookmarklet.MESSAGE_USAGE = "Transliteration is enabled. Click on a textbox to start using it";
 t13nBookmarklet.KEYBOARD_SHORTCUT = "Ctrl+G";
@@ -148,7 +149,7 @@ t13nBookmarklet.initBookmarklet = function() {
     bookmarklet.showStatus(t13nBookmarklet.STATUS_ID, t13nBookmarklet.MESSAGE_NOT_SUPPORTED, 5000);
     return
   }bookmarklet.loadScript("t13nJSAPIScript", bookmarklet.getProtocol() + "//www.google.com/jsapi", "window.google && google.load", function() {
-    google.load("elements", "1", {packages:"transliteration", callback:function() {
+    google.load("elements", "1", {packages:"transliteration", nocss:true, callback:function() {
       t13nBookmarklet.initialized = true;
       bookmarklet.showStatus(t13nBookmarklet.STATUS_ID, t13nBookmarklet.MESSAGE_LOADED, 5000);
       if(t13nBookmarklet.lang)t13nBookmarklet.toggle()
@@ -192,7 +193,7 @@ t13nBookmarklet.activeElementEnabler = function() {
     activeTextField.style.paddingLeft = "";
     activeTextField.style.paddingRight = "";
     activeTextField.setAttribute("t13nContentWidth", contentWidth);
-    if(activeTextField.ownerDocument != document)bookmarklet.loadCSS(t13nBookmarklet.CSS_ID, t13nBookmarklet.CSS_URL, activeTextField.ownerDocument);
+    bookmarklet.loadCSS(t13nBookmarklet.CSS_ID, t13nBookmarklet.CSS_URL, activeTextField.ownerDocument);
     try {
       tbns.control.makeTransliteratable([activeTextField])
     }catch(e) {
