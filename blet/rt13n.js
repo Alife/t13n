@@ -97,8 +97,12 @@ bookmarklet.hasActiveElementSupport = function() {
 };
 bookmarklet.getActiveTextField = function(opt_doc) {
   var doc = opt_doc || window.document;
-  var activeElement = doc.activeElement;
-  if(!activeElement)return null;
+  var activeElement;
+  try {
+    activeElement = doc.activeElement
+  }catch(e) {
+    return null
+  }if(!activeElement)return null;
   var elementName = activeElement.tagName.toUpperCase();
   if(elementName == "TEXTAREA" || elementName == "INPUT" && activeElement.type.toUpperCase() == "TEXT")return activeElement;
   var iframes = doc.getElementsByTagName("iframe");
@@ -212,7 +216,7 @@ t13nBookmarklet.setElementStyle = function() {
     var oldOffsetWidth = element.offsetWidth;
     element.style.backgroundImage = 'url("' + tbns.IMAGE_BASE_URL + tbns.lang + "_" + (tbns.control.isTransliterationEnabled() ? "e" : "d") + '.gif")';
     element.style.backgroundRepeat = "no-repeat";
-    if(tbns.lang == "ar") {
+    if(tbns.lang == "ar" || tbns.lang == "ur") {
       element.style.backgroundPosition = "100% 0%";
       element.style.paddingRight = "20px"
     }else {
