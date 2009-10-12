@@ -13,8 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-(function(){
-var bookmarklet = {};
+(function(){var bookmarklet = {};
 bookmarklet.loadScript = function(id, src, opt_scriptLoadedCheck, opt_onScriptLoad) {
   if(!document.getElementById(id)) {
     var s = document.createElement("script");
@@ -95,7 +94,7 @@ bookmarklet.getParameter = function(url, name) {
 bookmarklet.hasActiveElementSupport = function() {
   return typeof document.activeElement != "undefined"
 };
-bookmarklet.getActiveTextField = function(opt_doc) {
+bookmarklet.getActiveField = function(opt_doc) {
   var doc = opt_doc || window.document;
   var activeElement;
   try {
@@ -103,17 +102,22 @@ bookmarklet.getActiveTextField = function(opt_doc) {
   }catch(e) {
     return null
   }if(!activeElement)return null;
-  var elementName = activeElement.tagName.toUpperCase();
-  if(elementName == "TEXTAREA" || elementName == "INPUT" && activeElement.type.toUpperCase() == "TEXT")return activeElement;
+  if(bookmarklet.isEditableElement(activeElement))return activeElement;
   var iframes = doc.getElementsByTagName("iframe");
   for(var i = 0;i < iframes.length;i++)try {
     var iframe = iframes[i];
-    var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+    var iframeDocument = iframe.contentWindow.document;
     if(!iframeDocument)continue;
-    var iframeActiveTextField = bookmarklet.getActiveTextField(iframeDocument);
-    if(iframeActiveTextField)return iframeActiveTextField
+    if((iframeDocument.designMode.toUpperCase() == "ON" || iframeDocument.body.contentEditable.toUpperCase() == "TRUE") && iframeDocument.hasFocus())return iframe;
+    var iframeActiveField = bookmarklet.getActiveField(iframeDocument);
+    if(iframeActiveField)return iframeActiveField
   }catch(e) {
   }return null
+};
+bookmarklet.isEditableElement = function(element) {
+  var elementName = element.tagName.toUpperCase();
+  var iframedoc;
+  return elementName == "TEXTAREA" || elementName == "INPUT" && element.type.toUpperCase() == "TEXT" || elementName == "DIV" && element.contentEditable.toUpperCase() == "TRUE" || elementName == "IFRAME" && (iframedoc = element.contentWindow.document) && (iframedoc.designMode.toUpperCase() == "ON" || iframedoc.body.contentEditable.toUpperCase() == "TRUE")
 };
 bookmarklet.contains = function(arr, element) {
   for(var i = 0;i < arr.length;i++)if(arr[i] === element)return true;
@@ -126,11 +130,11 @@ t13nBookmarklet.IMAGE_BASE_URL = "http://t13n.googlecode.com/files/";
 t13nBookmarklet.SCRIPT_URL = t13nBookmarklet.SCRIPT_BASE_URL + "rt13n.js";
 t13nBookmarklet.SCRIPT_ID = "t13ns";
 t13nBookmarklet.STATUS_ID = "t13n";
-t13nBookmarklet.MESSAGE_LOADING = "Loading transliteration";
-t13nBookmarklet.MESSAGE_STILL_LOADING = "Still loading transliteration";
-t13nBookmarklet.MESSAGE_LOADED = "Transliteration loaded";
-t13nBookmarklet.MESSAGE_ENABLED = "Transliteration is enabled. " + "To disable, click on the bookmarklet again";
-t13nBookmarklet.MESSAGE_DISABLED = "Transliteration has been disabled. " + "To enable, click on the bookmarklet again";t13nBookmarklet.initialized = false;
+t13nBookmarklet.MESSAGE_LOADING = "Loading Google Transliteration";
+t13nBookmarklet.MESSAGE_STILL_LOADING = "Still loading Google Transliteration";
+t13nBookmarklet.MESSAGE_LOADED = "Google Transliteration loaded";
+t13nBookmarklet.MESSAGE_ENABLED = "Google Transliteration is enabled. " + "To disable, click on the bookmarklet again";
+t13nBookmarklet.MESSAGE_DISABLED = "Google Transliteration has been disabled. " + "To enable, click on the bookmarklet again";t13nBookmarklet.initialized = false;
 t13nBookmarklet.loadURL = null;
 t13nBookmarklet.lang = null;
 t13nBookmarklet.control = null;
@@ -139,9 +143,8 @@ t13nBookmarklet.registeredElements = [];
 t13nBookmarklet.CSS_ID = "t13nCSS";
 t13nBookmarklet.CSS_URL = t13nBookmarklet.CSS_BASE_URL + "api.css";
 t13nBookmarklet.MESSAGE_NOT_SUPPORTED = "Your browser is not supported. " + "Supported on Chrome 2+/Safari 4+/IE 6+/FF 3+";
-t13nBookmarklet.MESSAGE_USAGE = "Transliteration is enabled. Click on a textbox to start using it";
+t13nBookmarklet.MESSAGE_USAGE = "Transliteration is enabled. Click on any input field to start using it";
 t13nBookmarklet.KEYBOARD_SHORTCUT = "Ctrl+G";
-t13nBookmarklet.MESSAGE_TOOLTIP = "(Ctrl+G to toggle transliteration)";
 t13nBookmarklet.initBookmarklet = function() {
   bookmarklet.showStatus(t13nBookmarklet.STATUS_ID, t13nBookmarklet.MESSAGE_LOADING);
   var t13nScript = document.getElementById(t13nBookmarklet.SCRIPT_ID);
@@ -188,21 +191,20 @@ t13nBookmarklet.toggle = function(opt_lang) {
 t13nBookmarklet.activeElementEnabler = function() {
   var tbns = t13nBookmarklet;
   if(!tbns.control.isTransliterationEnabled())return;
-  var activeTextField = bookmarklet.getActiveTextField();
-  if(!activeTextField)return;
-  if(!bookmarklet.contains(tbns.registeredElements, activeTextField))try {
-    activeTextField.style.paddingLeft = 0;
-    activeTextField.style.paddingRight = 0;
-    var contentWidth = activeTextField.clientWidth;
-    activeTextField.style.paddingLeft = "";
-    activeTextField.style.paddingRight = "";
-    activeTextField.setAttribute("t13nContentWidth", contentWidth);
-    bookmarklet.loadCSS(t13nBookmarklet.CSS_ID, t13nBookmarklet.CSS_URL, activeTextField.ownerDocument);
+  var activeField = bookmarklet.getActiveField();
+  if(!activeField)return;
+  if(!bookmarklet.contains(tbns.registeredElements, activeField))try {
+    activeField.style.paddingLeft = 0;
+    activeField.style.paddingRight = 0;
+    var contentWidth = activeField.clientWidth;
+    activeField.style.paddingLeft = "";
+    activeField.style.paddingRight = "";
+    activeField.setAttribute("t13nContentWidth", contentWidth);
+    bookmarklet.loadCSS(t13nBookmarklet.CSS_ID, t13nBookmarklet.CSS_URL, activeField.ownerDocument);
     try {
-      tbns.control.makeTransliteratable([activeTextField])
+      tbns.control.makeTransliteratable([activeField])
     }catch(e) {
-    }activeTextField.title = (activeTextField.title || "") + " " + tbns.MESSAGE_TOOLTIP;
-    tbns.registeredElements.push(activeTextField);
+    }tbns.registeredElements.push(activeField);
     tbns.control.enableTransliteration();
     t13nBookmarklet.setElementStyle()
   }catch(e) {
@@ -216,7 +218,7 @@ t13nBookmarklet.setElementStyle = function() {
     var oldOffsetWidth = element.offsetWidth;
     element.style.backgroundImage = 'url("' + tbns.IMAGE_BASE_URL + tbns.lang + "_" + (tbns.control.isTransliterationEnabled() ? "e" : "d") + '.gif")';
     element.style.backgroundRepeat = "no-repeat";
-    if(tbns.lang == "ar" || tbns.lang == "ur") {
+    if(tbns.lang == "ar" || tbns.lang == "fa" || tbns.lang == "ur") {
       element.style.backgroundPosition = "100% 0%";
       element.style.paddingRight = "20px"
     }else {
@@ -228,8 +230,7 @@ t13nBookmarklet.setElementStyle = function() {
       var boxSizeDifference = newOffsetWidth - oldOffsetWidth;
       element.style.width = contentWidth - boxSizeDifference + "px"
     }
-  }if(tbns.control.isTransliterationEnabled())bookmarklet.showStatus(tbns.STATUS_ID, bookmarklet.getActiveTextField() ? tbns.MESSAGE_ENABLED : tbns.MESSAGE_USAGE, 3000);
+  }if(tbns.control.isTransliterationEnabled())bookmarklet.showStatus(tbns.STATUS_ID, bookmarklet.getActiveField() ? tbns.MESSAGE_ENABLED : tbns.MESSAGE_USAGE, 3000);
   else bookmarklet.showStatus(tbns.STATUS_ID, tbns.MESSAGE_DISABLED, 3000)
 };
-t13nBookmarklet.initBookmarklet();
-})();
+t13nBookmarklet.initBookmarklet();})();
