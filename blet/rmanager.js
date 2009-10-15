@@ -13,8 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-(function(){
-var bookmarkletsmanager = {};
+(function(){var bookmarkletsmanager = {};
 bookmarkletsmanager.DEFINITION_TEMPLATE = "javascript:(@BMNAME@=window.@BMNAME@||@BMDEF@)(@BMARGS@)";
 bookmarkletsmanager.getDefinition = function(bookmarkletName, bookmarkletArgs) {
   var template = bookmarkletsmanager.DEFINITION_TEMPLATE;
@@ -26,5 +25,4 @@ bookmarkletsmanager.createBookmarklet = function(anchorId, bookmarkletName) {
   var bookmarkletArgs = args.join(",");
   document.getElementById(anchorId).href = bookmarkletsmanager.getDefinition(bookmarkletName, bookmarkletArgs)
 };
-window["bookmarkletsmanager"] = bookmarkletsmanager;
-})();
+window["bookmarkletsmanager"] = bookmarkletsmanager;})();
