@@ -144,7 +144,6 @@ t13nBookmarklet.backgroundTimerId = null;
 t13nBookmarklet.registeredElements = [];
 t13nBookmarklet.CSS_ID = "t13nCSS";
 t13nBookmarklet.CSS_URL = t13nBookmarklet.CSS_BASE_URL + "api.css";
-t13nBookmarklet.KEYBOARD_SHORTCUT = navigator.platform.toLowerCase().indexOf("mac") != -1 ? "Meta+G" : "Ctrl+G";
 t13nBookmarklet.initBookmarklet = function() {
   bookmarklet.showStatus(t13nBookmarklet.STATUS_ID, t13nBookmarklet.MESSAGE_LOADING);
   var t13nScript = document.getElementById(t13nBookmarklet.SCRIPT_ID);
@@ -178,7 +177,7 @@ t13nBookmarklet.toggle = function(opt_lang) {
   }var tns = google.elements.transliteration;
   var translitControlClass = tns.TransliterationControl;
   if(!tbns.control) {
-    var options = {sourceLanguage:tns.LanguageCode.ENGLISH, destinationLanguage:tbns.lang, shortcutKey:tbns.KEYBOARD_SHORTCUT, transliterationEnabled:false};
+    var options = {sourceLanguage:tns.LanguageCode.ENGLISH, destinationLanguage:tbns.lang, transliterationEnabled:false};
     tbns.control = new translitControlClass(options);
     tbns.control.addEventListener(translitControlClass.EventType.STATE_CHANGED, tbns.setElementStyle, tbns.control)
   }tbns.control.setLanguagePair(tns.LanguageCode.ENGLISH, tbns.lang);
