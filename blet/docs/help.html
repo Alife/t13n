@@ -1,0 +1,780 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<!--
+Copyright 2009 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+you may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!--
+Bookmarklets that can enable Google transliteration on any input editor.
+-->
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+
+  <title>Type in your language using transliteration bookmarklet</title>
+  <style type="text/css">
+      .main {
+        font-family: Arial, Helvetica, Sans-serif;
+      }
+
+      .help {
+          font-family: Arial, Helvetica, Sans-serif;
+      }
+
+      .title {
+        font-size: 22px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-top: 1px solid rgb(51, 102, 204);
+        background-color: rgb(229, 236, 249);
+      }
+
+      .section {
+        font-size: 18px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-top: 1px solid rgb(51, 102, 204);
+        background-color: rgb(229, 236, 249);
+      }
+
+      .subsection {
+        font-size: 16px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-top: 1px solid rgb(51, 102, 204);
+        background-color: rgb(229, 236, 249);
+      }
+
+      .main .mainheader {
+          border-top: 1px solid rgb(51, 102, 204);
+          background-color: rgb(229, 236, 249);
+      }
+
+      .help .helpheader {
+          margin-bottom: 25px;
+      }
+
+      .help .toc {
+          font-size: 12px;
+          margin: 0;
+          border: 0;
+          padding: 0;
+          list-style: none;
+      }
+
+      .help .toc li {
+          padding-bottom: 10px;
+      }
+
+      .help .helptext {
+        font-size: small;
+        padding: 10px;
+      }
+
+      .tablepadding {
+        padding: 20px 50px;
+      }
+
+      .colpadding {
+        padding: 5px 20px;
+        vertical-align: bottom;
+      }
+  </style>
+  <script type="text/javascript" src=
+  "http://t13n.googlecode.com/svn/trunk/blet/rmanager.js">
+  </script>
+  <script type="text/javascript" src=
+  "http://t13n.googlecode.com/svn/trunk/blet/rt13nloader.js">
+  </script>
+</head>
+
+<body class="main">
+  <div>
+    <h2 class="mainheader title">
+    Type in your language using transliteration bookmarklets
+    </h2>
+  </div>
+  <div class="help" style="font-size: 12px">
+      <div class="helptext">
+        <p>Ever visited a website and wanted to type in your language but did not
+        find transliteration feature there? Now you can use Google
+        transliteration bookmarklets to type in your language on any website.
+        </p>
+        <p>
+        Transliteration <a href=
+          "http://en.wikipedia.org/wiki/Bookmarklet">bookmarklet</a> is a small
+        piece of code that you save in your browser. Once saved, you can type
+        in your langauge in any input editor on any website of your choice. It
+        works on Google websites as well as other websites.
+        For example, you can use the Hindi bookmarklet to chat in Hindi in <a
+          href="http://www.gmail.com">Gmail</a>, Tamil bookmarklet to send
+        messages in Tamil to your friends on social networking websites, or edit
+        an Arabic <a href=
+          "http://ar.wikipedia.org">Wikipedia</a> article or search for
+        Greek information on <a href="http://www.google.com">Google search</a>.
+      <br>
+        Note that you do not need to use the bookmarklet to compose email in <a
+          href="http://mail.google.com/support/bin/answer.py?hl=en&answer=139576">
+          Gmail</a>, write <a href="http://www.blogger.com/hindi">blog</a>, write
+        a <a href="http://knol.google.com/k/knol-help/knol-in-different-languages/si57lahl1w25/108#What_languages_are_supported">knol</a>
+        or use in <a href="http://www.google.com/transliterate">Labs</a>
+        page. Transliteration is built-in on these websites. A list of Google
+        products which have transliteration available can be seen <a
+          href="http://google.com/transliterate/about.html#products">here</a>.
+        </p>
+        <p>
+        Google Transliteration Bookmarklets are available in 19 different
+        languages - <i>Amharic, Arabic, Bengali, Greek, Gujarati, Hindi,
+          Kannada, Malayalam, Marathi, Nepali, Persian (Farsi), Punjabi, Russian,
+          Sanskrit, Serbian, Tamil, Telugu, Tigrinya</i> and <i>Urdu</i>.
+      </p>
+      <p>
+        This page provides information on how to use the Transliteration
+        Bookmarklets. For simplicity, Hindi Bookmarklet is used as an example at
+        most places in this page.
+      </p>
+      </div>
+  </div>
+  <br><br>
+
+  <div class="help">
+      <ul class="toc">
+        <li><a href="#AboutTransliteration">About transliteration</a></li>
+
+        <li><a href="#Save">Saving the transliteration bookmarklet</a></li>
+
+        <li><a href="#Use">Using the transliteration bookmarklet</a></li>
+
+        <li><a href="#FAQ">Frequently asked questions</a></li>
+
+        <li><a href="#Feedback">Feedback</a></li>
+
+        <li><a href="#Terms">Terms of use</a></li>
+      </ul>
+  </div>
+  <br>
+
+  <div class="help">
+      <h3 class="helpheader section"><a id="AboutTransliteration" href=
+      "#AboutTransliteration" name="AboutTransliteration">About
+      transliteration</a></h3>
+
+      <div class="helptext">
+        Google Transliteration offers an option for converting English
+        characters to the characters used in language of your choice. This
+        lets you type words in your language phonetically in English script and
+        then have them appear in the language script. This is not the
+        same as translation - it is the sound of the words that are converted
+        from one alphabet to the other, not their meaning. For example, typing
+        "hamesha" transliterates into Hindi as <img src=
+        "http://google.com/transliterate/indic/img/example_hi.png"/>.
+      </div>
+
+      <h3 class="helpheader section"><a id="Save" href="#Save" name=
+      "Save">Saving the transliteration bookmarklet</a></h3>
+
+      <div class="helptext">
+        If you know how to create a bookmarklet, bookmark the link for the
+        language of your choice : <br><br>
+        NOTE: This is NOT same as clicking on the link.
+          <table class="tablepadding">
+            <tr>
+              <td class="colpadding">Amharic</td>
+              <td class="colpadding"><a id="transliteration_bookmark_am"
+                  name="transliteration_bookmark_am">[&#4768; Type in
+                  Amharic]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Arabic</td>
+              <td class="colpadding"><a id="transliteration_bookmark_ar"
+                  name="transliteration_bookmark_ar">[&#1593; Type in
+                  Arabic]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Bengali</td>
+              <td class="colpadding"><a id="transliteration_bookmark_bn"
+                  name="transliteration_bookmark_bn">[&#2437; Type in
+                  Bengali]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Greek</td>
+              <td class="colpadding"><a id="transliteration_bookmark_el"
+                  name="transliteration_bookmark_el">[&#0945; Type in
+                  Greek]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Gujarati</td>
+              <td class="colpadding"><a id="transliteration_bookmark_gu"
+                  name="transliteration_bookmark_gu">[&#2693; Type in
+                  Gujarati]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Hindi</td>
+              <td class="colpadding"><a id="transliteration_bookmark_hi"
+                  name="transliteration_bookmark_hi">[&#2309; Type in
+                  Hindi]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Kannada</td>
+              <td class="colpadding"><a id="transliteration_bookmark_kn"
+                  name="transliteration_bookmark_kn">[&#3205; Type in
+                  Kannada]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Malayalam</td>
+              <td class="colpadding"><a id="transliteration_bookmark_ml"
+                  name="transliteration_bookmark_ml">[&#3333; Type in
+                  Malayalam]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Marathi</td>
+              <td class="colpadding"><a id="transliteration_bookmark_mr"
+                  name="transliteration_bookmark_mr">[&#2309; Type in
+                  Marathi]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Nepali</td>
+              <td class="colpadding"><a id="transliteration_bookmark_ne"
+                  name="transliteration_bookmark_ne">[&#2309; Type in
+                  Nepali]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Persian</td>
+              <td class="colpadding"><a id="transliteration_bookmark_fa"
+                  name="transliteration_bookmark_fa">[&#1662; Type in
+                  Persian]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Punjabi</td>
+              <td class="colpadding"><a id="transliteration_bookmark_pa"
+                  name="transliteration_bookmark_pa">[&#2565; Type in
+                  Punjabi]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Russian</td>
+              <td class="colpadding"><a id="transliteration_bookmark_ru"
+                  name="transliteration_bookmark_ru">[&#1041; Type in
+                  Russian]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Sanskrit</td>
+              <td class="colpadding"><a id="transliteration_bookmark_sa"
+                  name="transliteration_bookmark_sa">[&#2309; Type in
+                  Sanskrit]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Serbian</td>
+              <td class="colpadding"><a id="transliteration_bookmark_sr"
+                  name="transliteration_bookmark_sr">[&#1035; Type in
+                  Serbian]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Tamil</td>
+              <td class="colpadding"><a id="transliteration_bookmark_ta"
+                  name="transliteration_bookmark_ta">[&#2949; Type in
+                  Tamil]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Telugu</td>
+              <td class="colpadding"><a id="transliteration_bookmark_te"
+                  name="transliteration_bookmark_te">[&#3077; Type in
+                  Telugu]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Tigrinya</td>
+              <td class="colpadding"><a id="transliteration_bookmark_ti"
+                  name="transliteration_bookmark_ti">[&#4725; Type in
+                  Tigrinya]</a></td>
+            </tr>
+            <tr>
+              <td class="colpadding">Urdu</td>
+              <td class="colpadding"><a id="transliteration_bookmark_ur"
+                  name="transliteration_bookmark_ur">[&#1570; Type in
+                  Urdu]</a></td>
+            </tr>
+         </table>
+        <br>
+        Done! Now whenever you visit a website and want to type in any of these
+        languages, click on the bookmarklet you just created for that language.
+        For more information, see <a href="#Use">Using the transliteration
+        bookmarklet</a> section.
+      </div>
+      <br><br>
+      <div class="helptext">
+        For detailed steps on saving the bookmarklet, use the appropriate link
+        below. These steps are to be followed only once.<br>
+        <br>
+        <blockquote>
+        <ul class="help toc">
+          <li><a href="#SaveIE">
+          <img src="images/ie/ie.jpg" style="vertical-align:middle" alt=
+          "IE icon">&nbsp;Steps for Internet Explorer users.</a></li>
+
+          <li><a href="#SaveFF">
+          <img src="images/ff/firefox.jpg" style="vertical-align:middle"
+          alt="Firefox icon">&nbsp;Steps for Firefox users.</a></li>
+
+          <li><a href="#SaveChrome">
+          <img src="images/chrome/chrome.jpg" style="vertical-align:middle"
+          alt="Chrome icon">&nbsp;Steps for Chrome users.</a></li>
+
+          <li style="display: _SAFARISUPPORTED_"><a href="#SaveSafari">
+          <img src="images/safari/safari.jpg" style="vertical-align:middle"
+          alt="Safari icon">&nbsp;Steps for Safari users.</a></li>
+        </ul>
+        </blockquote>
+      </div>
+
+        <h4 class="helpheader subsection"><a id="SaveIE" href="#SaveIE" name=
+        "SaveIE">Saving transliteration bookmarklet on Internet
+        Explorer</a></h4>
+
+        <div class="helptext">
+          Transliteration bookmarklet is supported on Internet Explorer
+          version 6 and above. If you come across font issues, see <a href=
+            "http://www.google.com/transliterate/about.html#fonts">
+            Transliteration Font guide</a> for possible solutions.
+          <br><br>
+          Perform the following steps:
+
+          <ol>
+            <li>Right-click this link: <font size="+1"><a
+                  id="transliteration_bookmark_hi_1"
+                  name="transliteration_bookmark_hi_1">[&#2309; Type in
+                  Hindi]</a></font>.<br><br></li>
+
+            <li>Select "Add to Favorites".<br>
+            <br>
+            <img src="images/ie/ie_add_to_favorites.jpg" alt=
+            "Adding bookmarklet to favorites in IE"><br>
+            <br></li>
+
+            <li>Click "Yes" for the security message shown by Internet
+            Explorer.<br>
+            <br>
+            <img src="images/ie/ie_security_message.jpg" alt=
+            "IE security message for Javascript: URL"><br>
+            <br></li>
+
+            <li>Choose "Links" as the directory where the bookmarklet should be
+            created.<br>
+            <br>
+            <img src="images/ie/ie_select_links_hi.jpg" alt=
+            "Selecting Links folder for bookmarklet"><br>
+            <br></li>
+
+            <li>Click "Add".</li>
+          </ol><br>
+          After following the above steps, a bookmark with name
+          <font size="+1">[&#2309; Type in Hindi]</font> should appear in the
+          Internet Explorer Links toolbar as follows:<br>
+          <br>
+
+          <blockquote>
+            <img src="images/ie/ie_links_hi.jpg" alt="Links toolbar in IE">
+          </blockquote>
+          <br>
+          <br><br>
+          If you do not see the the bookmark, follow these additional steps:
+
+          <ol>
+            <li>Make sure that the Links toolbar is visible. Right-click on
+            empty space in Internet Explorer toolbar area and confirm that the
+            Links toolbar is checked:<br>
+            <br>
+            <img src="images/ie/ie_ensure_linksvisible.jpg" alt=
+            "Ensuring Links toolbar is visible"><br>
+            <br></li>
+
+            <li>Make sure that the toolbars are unlocked. To unlock toolbar,
+            right-click on empty space in Internet Explorer toolbar area and
+            uncheck the "Lock the Toolbars" option.<br>
+            <br>
+            <img src="images/ie/ie_unlock_toolbars.jpg" alt=
+            "Unlocking toolbars in IE"><br>
+            <br></li>
+
+            <li>Drag the Links toolbar to left side. Your toolbar will now look
+            like:<br>
+            <br>
+            <img src="images/ie/ie_links_hi.jpg"
+            alt="Dragging links toolbar in IE"></li>
+          </ol>
+          <br><br>
+          Done! You can now go to <a href="#Use">Using the transliteration
+          bookmarklet</a> section for details on how to use the
+          bookmarklet.
+        </div>
+
+        <h4 class="helpheader subsection"><a id="SaveFF" href="#SaveFF" name=
+        "SaveFF">Saving transliteration bookmarklet on Firefox</a></h4>
+
+        <div class="helptext">
+          Transliteration bookmarklet is supported on Firefox version 3
+          and above. If you come across font issues, see <a href=
+          "http://www.google.com/transliterate/about.html#fonts">Transliteration
+          Font Guide</a> for possible solutions.<br>
+          <br>
+          Perform the following steps:
+
+          <ol>
+            <li>Right-click this link: <font size="+1"><a
+                  id="transliteration_bookmark_hi_2"
+                  name="transliteration_bookmark_hi_2">[&#2309; Type in
+                  Hindi]</a></font>.<br><br></li>
+
+            <li>Click on "Bookmark This Link".<br>
+            <br>
+            <img src="images/ff/ff_add_to_bookmarks.jpg" alt=
+            "Adding bookmarklet to Firefox toolbar"><br>
+            <br></li>
+
+            <li>Choose "Bookmarks Toolbar" in the "Folder" option.<br>
+            <br>
+            <img src="images/ff/ff_folder_option_hi.jpg" alt=
+            "Choosing Bookmarks toolbar in Firefox"><br>
+            <br></li>
+
+            <li>Click "Done".</li>
+          </ol>
+          <br>After following the above steps, a bookmark with name
+          <font size="+1">[&#2309; Type in Hindi]</font> should appear in the
+          Firefox Bookmark toolbar as follows:<br>
+          <br>
+          <blockquote>
+            <img src="images/ff/ff_bookmark_hi.jpg" alt=
+            "Firefox Bookmarks toolbar">
+          </blockquote>
+          <br><br><br>
+          If you do not see the the bookmark, follow this additional step:<br>
+          <br>
+          Make sure that the Bookmarks toolbar is enabled. Right-click on the
+          empty space next to "Help" menu and click on the "Bookmarks Toolbar"
+          option:<br> <br>
+
+          <blockquote>
+            <img src="images/ff/ff_ensure_bookmarksvisible.jpg" alt=
+            "Ensuring Bookmarks toolbar is visible in Firefox">
+          </blockquote>
+          <br><br><br>
+          Done! You can now go to <a href="#Use">Using the transliteration
+          bookmarklet</a> section for details on how to use the
+          bookmarklet.<br>
+        </div>
+
+        <h4 class="helpheader subsection"><a id="SaveChrome" href=
+        "#SaveChrome" name="SaveChrome">Saving transliteration bookmarklet
+        on Chrome</a></h4>
+
+        <div class="helptext">
+          Transliteration bookmarklet is supported on Chrome 2. If you
+          come across font issues, see <a
+            href="http://www.google.com/transliterate/about.html#fonts">
+            Transliteration Font guide</a> for possible solutions.<br>
+          <br>
+          Perform the following steps:
+          <ol>
+            <li>Press Ctrl+B so that the Bookmarks toolbar is always
+            visible.<br>
+            <br>
+            <img src='images/chrome/chrome_ensure_bookmarksvisible.jpg' alt=
+            "Ensuring Bookmarkls toolbar is visible in Chrome"><br>
+            <br></li>
+
+          <li>Drag this link: <font size="+1"><a
+                id="transliteration_bookmark_hi_3"
+                name="transliteration_bookmark_hi_3">[&#2309; Type in
+                Hindi]</a></font>
+            to the Bookmarks toolbar.</li>
+          </ol>
+          <br>After following the above steps, a bookmark with name
+          <font size="+1">[&#2309; Type in Hindi]</font> should appear
+          in the Chrome Bookmark toolbar as follows:<br>
+          <br>
+          <blockquote>
+            <img src="images/chrome/chrome_bookmark_hi.jpg" alt=
+            "Bookmarks toolbar display in Chrome">
+          </blockquote>
+          <br>
+          Done! You can now go to <a href="#Use">Using the transliteration
+          bookmarklet</a> section for details on how to use the
+          bookmarklet.<br>
+          <br>
+        </div>
+
+        <div>
+        <h4 class="helpheader subsection"><a id="SaveSafari" href=
+        "#SaveSafari" name="SaveSafari">Saving transliteration bookmarklet
+        on Safari</a></h4>
+
+        <div class="helptext">
+          Transliteration bookmarklet is supported on Safari 4. If you
+          come across font issues, see <a href=
+            "http://www.google.com/transliterate/about.html#fonts">
+            Transliteration Font Guide</a> for possible solutions.<br>
+          <br>
+          Perform the following steps:
+
+          <ol>
+            <li>Press Ctrl+Shift+B so that the Bookmarks toolbar is always
+            visible.<br>
+            <br>
+            <img src="images/safari/safari_ensure_bookmarksvisible.jpg" alt=
+            "Ensuring Bookmarks toolbar is visible in Chrome"><br>
+            <br></li>
+
+            <li>Drag this link <font size="+1">
+            <a id="transliteration_bookmark_hi_4"
+              name="transliteration_bookmark_hi_4">
+              [&#2309; Type in Hindi]</a></font>
+            to the Bookmarks toolbar.</li>
+          </ol>
+          <br>After following the above steps, a bookmark with name
+          <font size="+1">[&#2309; Type in Hindi]</font> should appear in the
+          Safari Bookmark toolbar as follows:<br>
+          <br>
+
+          <blockquote>
+            <img src="images/safari/safari_bookmark_hi.jpg" alt=
+            "Bookmarks toolbar display in Safari">
+          </blockquote><br>
+          <br>
+          Done! You can now go to <a href="#Use">Using the transliteration
+          bookmarklet</a> section for details on how to use the bookmarklet.
+        </div>
+        </div>
+
+        <h3 class="helpheader section"><a id="Use" href="#Use" name="Use">Using
+        the transliteration bookmarklet</a></h3>
+
+        <div class="helptext">
+          To type in Hindi on any website, follow these simple steps:
+          <br>
+          <ol>
+            <li>Click on the <font size="+1">[&#2309; Type in Hindi]</font>
+              button in Bookmarks toolbar. Wait till the message "Transliteration
+              is enabled ..." is displayed. The message informs us that
+              transliteration is ready to use.<br>
+            <br></li>
+
+            <li>Click on the input editor where you want to type in Hindi.
+            You will see a <img src="images/common/hi_e.gif"
+            alt= "Transliteration enabled icon"> icon in the editor. Now start
+            typing in English and words will be transliterated to
+            Hindi.<br><br></li>
+
+            <li>To switch off typing in Hindi (i.e. to type in English), click on the
+              <font size="+1">[&#2309; Type in Hindi]</font> button in Bookmarks
+              toolbar again.
+          </ol>
+          <br>
+
+          Here are some places where you can try out Bookmarklets:
+          <br><br>
+
+          <b>Chatting in Tamil in Gmail:</b><br>
+          <br>
+          <blockquote>
+              <img src="images/common/transliteration_chat_ta.jpg" alt=
+              "Using bookmarklet in Google Chat">
+          </blockquote>
+          <br><br><br>
+
+          <b>Editing an Arabic Wikipedia article:</b>
+          <br><br>
+          <blockquote>
+              <img src="images/common/transliteration_wiki_ar.jpg" alt=
+                "Using bookmarklet in Wikipedia">
+          </blockquote>
+        </div>
+
+        <h3 class="helpheader section"><a id="FAQ" href="#FAQ" name=
+        "FAQ">Frequently asked questions</a></h3>
+
+        <div class="helptext">
+          <ol>
+            <li>What is a Transliteration bookmarklet ?<br>
+            <br>
+            Transliteration bookmarklet is a tool that helps you type in
+            your language on any website. The tool uses the Google
+            transliteration service in the background.<br><br></li>
+
+            <li>Can I use this tool on websites other than Google's ?<br>
+            <br>
+            Yes. These bookmarklets can enable Typing in your language on any
+            website.<br><br></li>
+
+            <li>How do I use this tool ?<br>
+            <br>
+            See the <a href="#Save">Saving the transliteration
+            bookmarklet</a> and the <a href="#Use">Using the transliteration
+            bookmarklet</a> sections for detailed information.<br><br></li>
+
+            <li>Does my system support the bookmarklet tool?<br>
+            <br>
+            The bookmarklet tool is supported on Internet Explorer 6 and above,
+            Firefox 3 and above, Chrome 2 and Safari.<br><br></li>
+
+            <li>I created the bookmark but I cannot see it. Why?<br>
+            <br>
+            Please see the instructions in the <a href="#Save">Saving the
+            transliteration bookmarklet</a> for steps on creating the
+            bookmarklet and making sure that it is visible.<br><br></li>
+
+            <li>How do I switch ON transliteration or switch OFF
+            transliteration?<br>
+            <br>
+            You can switch ON transliteration by clicking on the bookmark link
+            in the Bookmarks toolbar. You can switch OFF transliteration by
+            clicking the same link again.<br>
+            For example, to switch ON typing in Amharic, click on <font
+              size="+1">[&#4768; Type in Amharic]</font> link in the Bookmarks
+            toolbar. Click on the same link again to switch it OFF.<br>
+            To type in your language, you must switch ON transliteration and then
+            click on the input editor where you want to type.
+            <br><br></li>
+
+            <li>How do I know if transliteration is enabled ?<br>
+            <br>
+            When transliteration is enabled, you will see an enabled icon, like
+            <img src="images/common/pa_e.gif" alt="Transliteration enabled icon">
+            (for Punjabi), when you click on the input editor.
+            If instead you see a disabled icon, like <img
+            src="images/common/pa_d.gif" alt="Transliteration disabled icon">,
+            in the editor, then transliteration is disabled.<br>
+            <br>
+            You can enable and disable transliteration by clicking on
+            bookmarklet link, like <font size="+1">[&#2565; Type in
+              Punjabi]</font> bookmarklet in the toolbar.<br><br></li>
+
+            <li>I cannot see text in supported language, but see empty boxes like
+            &#9744; instead - why ?<br>
+            <br>
+            This usually means that you browser or system does not have font support
+            for your language. See <a href=
+              "http://www.google.com/transliterate/about.html#fonts">
+              Transliteration Font Guide</a> for more details.<br><br></li>
+
+            <li>Will transliteration work even without internet
+            connectivity?<br>
+            <br>
+            Transliteration requires a live internet connection, as all the
+            transliteration is done on Google's servers and sent back to your
+            browser while you continue typing. If you find that the English
+            words you type are not getting converted to your language, make sure
+            that transliteration is ON and then check your internet
+            connection.<br><br></li>
+
+            <li>I created the bookmarklet. How can I delete it?<br>
+            <br>
+            To delete the bookmarklet, right-click on it and select
+            "Delete".</li>
+          </ol>
+        </div>
+
+        <h3 class="helpheader section"><a id="Feedback" href="#Feedback" name=
+        "Feedback">Feedback</a></h3>
+
+        <div class="helptext">
+          To share your thoughts with us, please send them to <a href=
+            "mailto:transliteration-support+bookmarklets@google.com">
+            transliteration-support+bookmarklets@google.com</a>.
+        </div>
+
+        <h3 class="helpheader section"><a id="Terms" href="#Terms" name=
+        "Terms">Terms of use</a></h3>
+
+        <div class="helptext">
+          This software is provided under the Apache 2.0 Licence. Please see
+          the <a href="http://t13n.googlecode.com/svn/trunk/COPYING">COPYING</a>
+          file for details.<br>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_am', 't13nb', 'am');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_ar', 't13nb', 'ar');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_bn', 't13nb', 'bn');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_el', 't13nb', 'el');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_gu', 't13nb', 'gu');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_hi', 't13nb', 'hi');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_kn', 't13nb', 'kn');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_ml', 't13nb', 'ml');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_mr', 't13nb', 'mr');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_ne', 't13nb', 'ne');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_fa', 't13nb', 'fa');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_pa', 't13nb', 'pa');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_ru', 't13nb', 'ru');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_sa', 't13nb', 'sa');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_sr', 't13nb', 'sr');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_ta', 't13nb', 'ta');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_te', 't13nb', 'te');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_ti', 't13nb', 'ti');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_ur', 't13nb', 'ur');
+
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_hi_1', 't13nb', 'hi');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_hi_2', 't13nb', 'hi');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_hi_3', 't13nb', 'hi');
+    bookmarkletsmanager.createBookmarklet(
+        'transliteration_bookmark_hi_4', 't13nb', 'hi');
+
+   // Reset value of t13nb namespace so bookmarklet links can work on this
+    // page as well.
+    t13nb = undefined;
+  </script>
+
+
+  <!-- Analytics code -->
+  <script type="text/javascript">
+    var gaJsHost = (('https:' == document.location.protocol) ?
+                     'https://ssl.' :
+                     'http://www.');
+    document.write(unescape('%3Cscript src="' + gaJsHost +
+                            'google-analytics.com/ga.js" ' +
+                            'type="text/javascript"%3E%3C/script%3E'));
+  </script>
+  <script type="text/javascript">
+  try {
+    var pageTracker = _gat._getTracker('UA-8738875-1');
+    pageTracker._trackPageview();
+  } catch(err) {}
+  </script>
+</body>
+</html>
