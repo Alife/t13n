@@ -1,4 +1,3 @@
-
 // Copyright 2009 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -117,7 +116,7 @@ bookmarklet.getActiveField = function(opt_doc) {
 bookmarklet.isEditableElement = function(element) {
   var elementName = element.tagName.toUpperCase();
   var iframedoc;
-  return elementName == "TEXTAREA" || elementName == "INPUT" && element.type.toUpperCase() == "TEXT" || elementName == "DIV" && element.contentEditable.toUpperCase() == "TRUE" || elementName == "IFRAME" && (iframedoc = element.contentWindow.document) && (iframedoc.designMode.toUpperCase() == "ON" || iframedoc.body.contentEditable.toUpperCase() == "TRUE")
+  return elementName == "TEXTAREA" || elementName == "INPUT" && (element.type.toUpperCase() == "TEXT" || element.type.toUpperCase() == "SEARCH") || elementName == "DIV" && element.contentEditable.toUpperCase() == "TRUE" || elementName == "IFRAME" && (iframedoc = element.contentWindow.document) && (iframedoc.designMode.toUpperCase() == "ON" || iframedoc.body.contentEditable.toUpperCase() == "TRUE")
 };
 bookmarklet.contains = function(arr, element) {
   for(var i = 0;i < arr.length;i++)if(arr[i] === element)return true;
@@ -184,15 +183,18 @@ t13nBookmarklet.toggle = function(opt_lang) {
   if(tbns.control.isTransliterationEnabled()) {
     window.clearInterval(t13nBookmarklet.backgroundTimerId);
     t13nBookmarklet.backgroundTimerId = null
-  }else t13nBookmarklet.backgroundTimerId = window.setInterval(t13nBookmarklet.activeElementEnabler, 250);
-  tbns.control.toggleTransliteration()
+  }else {
+    t13nBookmarklet.backgroundTimerId = window.setInterval(t13nBookmarklet.activeElementEnabler, 250);
+  }
+  tbns.control.toggleTransliteration();
 };
 t13nBookmarklet.activeElementEnabler = function() {
   var tbns = t13nBookmarklet;
   if(!tbns.control.isTransliterationEnabled())return;
   var activeField = bookmarklet.getActiveField();
   if(!activeField)return;
-  if(!bookmarklet.contains(tbns.registeredElements, activeField))try {
+  if(!bookmarklet.contains(tbns.registeredElements, activeField) &&
+      activeField.className != 'inputapi-popupeditor-input')try {
     activeField.style.paddingLeft = 0;
     activeField.style.paddingRight = 0;
     var contentWidth = activeField.clientWidth;
