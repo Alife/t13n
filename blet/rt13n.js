@@ -113,10 +113,37 @@ bookmarklet.getActiveField = function(opt_doc) {
   }catch(e) {
   }return null
 };
+
+
+/**
+ * @param {Element} element The element which needs to be checked.
+ * @return {boolean} Whether the element is editable or not. An element is
+ *     editable if it is a textarea, textbox, editable Div or editable IFrame.
+ */
 bookmarklet.isEditableElement = function(element) {
-  var elementName = element.tagName.toUpperCase();
-  var iframedoc;
-  return elementName == "TEXTAREA" || elementName == "INPUT" && (element.type.toUpperCase() == "TEXT" || element.type.toUpperCase() == "SEARCH") || elementName == "DIV" && element.contentEditable.toUpperCase() == "TRUE" || elementName == "IFRAME" && (iframedoc = element.contentWindow.document) && (iframedoc.designMode.toUpperCase() == "ON" || iframedoc.body.contentEditable.toUpperCase() == "TRUE")
+  var editable = false;
+  switch (element.tagName.toUpperCase()) {
+    case 'TEXTAREA':
+      editable = true;
+      break;
+    case 'INPUT':
+      editable = (element.type.toUpperCase() == 'TEXT');
+      break;
+    case 'DIV':
+      editable = (element.contentEditable.toUpperCase() == 'TRUE' ||
+                  element.isContentEditable);
+      break;
+    case 'IFRAME':
+      var iframedoc = element.contentDocument ||
+          element.contentWindow.document ||
+          element.document;
+      editable = iframedoc && (
+          iframedoc.designMode.toUpperCase() == 'ON' ||
+          iframedoc.body.contentEditable.toUpperCase() == 'TRUE' ||
+          iframedoc.body.isContentEditable);
+      break;
+  }
+  return editable;
 };
 bookmarklet.contains = function(arr, element) {
   for(var i = 0;i < arr.length;i++)if(arr[i] === element)return true;
@@ -143,7 +170,19 @@ t13nBookmarklet.backgroundTimerId = null;
 t13nBookmarklet.registeredElements = [];
 t13nBookmarklet.CSS_ID = "t13nCSS";
 t13nBookmarklet.CSS_URL = t13nBookmarklet.CSS_BASE_URL + "api.css";
+
 t13nBookmarklet.initBookmarklet = function() {
+  // Workaround of b/4449128, if activeElement is not supported, use onfocus
+  // handler to record the active element. We don't need onblur handler because
+  // activeEnabler method can endure wrong/old active element.
+  if (typeof document.activeElement == 'undefined' &&
+      document.addEventListener) {
+    document.activeElement = null;
+    document.addEventListener('focus', function(e) {
+      if (e && e.target)
+        document.activeElement = e.target == document ? null : e.target;
+    }, true);
+  }
   bookmarklet.showStatus(t13nBookmarklet.STATUS_ID, t13nBookmarklet.MESSAGE_LOADING);
   var t13nScript = document.getElementById(t13nBookmarklet.SCRIPT_ID);
   if(t13nScript) {
@@ -153,13 +192,20 @@ t13nBookmarklet.initBookmarklet = function() {
   if(!bookmarklet.hasActiveElementSupport()) {
     bookmarklet.showStatus(t13nBookmarklet.STATUS_ID, t13nBookmarklet.MESSAGE_NOT_SUPPORTED, 5000);
     return
-  }bookmarklet.loadScript("t13nJSAPIScript", bookmarklet.getProtocol() + "//www.google.com/jsapi", "window.google && google.load", function() {
-    google.load("elements", "1", {packages:"transliteration", nocss:true, callback:function() {
-      t13nBookmarklet.initialized = true;
-      bookmarklet.showStatus(t13nBookmarklet.STATUS_ID, t13nBookmarklet.MESSAGE_LOADED, 5000);
-      if(t13nBookmarklet.lang)t13nBookmarklet.toggle()
-    }})
+  }bookmarklet.loadScript("t13nJSAPIScript",bookmarklet.getProtocol() +
+    "//www.google.com/jsapi",
+    "window.google && google.load", function() {
+      google.load("elements", "1", {
+          packages : "transliteration",
+          nocss : true,
+          callback : function() {
+            t13nBookmarklet.initialized = true;
+            bookmarklet.showStatus(t13nBookmarklet.STATUS_ID, t13nBookmarklet.MESSAGE_LOADED, 5000);
+            if (t13nBookmarklet.lang)
+              t13nBookmarklet.toggle()
+          }})
   })
+
 };
 t13nBookmarklet.toggle = function(opt_lang) {
   var tbns = t13nBookmarklet;
@@ -193,15 +239,18 @@ t13nBookmarklet.activeElementEnabler = function() {
   if(!tbns.control.isTransliterationEnabled())return;
   var activeField = bookmarklet.getActiveField();
   if(!activeField)return;
-  if(!bookmarklet.contains(tbns.registeredElements, activeField) &&
-      activeField.className != 'inputapi-popupeditor-input')try {
+  if(!bookmarklet.contains(tbns.registeredElements, activeField) && activeField.className != 'inputapi-popupeditor-input')try {
     activeField.style.paddingLeft = 0;
     activeField.style.paddingRight = 0;
     var contentWidth = activeField.clientWidth;
     activeField.style.paddingLeft = "";
     activeField.style.paddingRight = "";
     activeField.setAttribute("t13nContentWidth", contentWidth);
-    bookmarklet.loadCSS(t13nBookmarklet.CSS_ID, t13nBookmarklet.CSS_URL, activeField.ownerDocument);
+
+    // Mark t13n is enabled via bookmarklet
+    activeField.setAttribute('goog_input_bookmarklet', true);
+
+    bookmarklet.loadCSS(t13nBookmarklet.CSS_ID, t13nBookmarklet.CSS_URL, document);
     try {
       tbns.control.makeTransliteratable([activeField])
     }catch(e) {
@@ -217,6 +266,10 @@ t13nBookmarklet.setElementStyle = function() {
     var element = tbns.registeredElements[i];
     if(!element.parentNode)continue;
     var oldOffsetWidth = element.offsetWidth;
+    if (element.style.backgroundImage &&
+            element.style.backgroundImage.indexOf(tbns.IMAGE_BASE_URL) == -1) {
+      continue;
+    }
     element.style.backgroundImage = 'url("' + tbns.IMAGE_BASE_URL + tbns.lang + "_" + (tbns.control.isTransliterationEnabled() ? "e" : "d") + '.gif")';
     element.style.backgroundRepeat = "no-repeat";
     if(tbns.lang == "ar" || tbns.lang == "fa" || tbns.lang == "ur") {
