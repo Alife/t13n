@@ -211,7 +211,7 @@ bookmarklet.initBookmarklet = function() {
     "window.google && google.load", function() {
       google.load("elements", "1", {
           packages : "inputtools",
-          nocss : true,
+          nocss : false,
           callback : function() {
             bookmarklet.initialized = true;
             bookmarklet.showStatus(bookmarklet.STATUS_ID, bookmarklet.MESSAGE_LOADED, 5000);
