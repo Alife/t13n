@@ -1,4 +1,4 @@
-// Copyright 2009 Google Inc.
+// Copyright 2012 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-(function(){var bookmarklet = {};
-bookmarklet.loadScript = function(id, src, opt_scriptLoadedCheck, opt_onScriptLoad) {
+(function(){
+  var bookmarklet = {};
+  bookmarklet.loadScript = function(id, src, opt_scriptLoadedCheck, opt_onScriptLoad) {
   if(!document.getElementById(id)) {
     var s = document.createElement("script");
     s.id = id;
@@ -21,24 +22,44 @@ bookmarklet.loadScript = function(id, src, opt_scriptLoadedCheck, opt_onScriptLo
     s.src = src;
     bookmarklet.getHead(document).appendChild(s);
     if(opt_scriptLoadedCheck)bookmarklet.waitForScriptLoad(opt_scriptLoadedCheck, opt_onScriptLoad || bookmarklet.nullFunction);
-    return true
-  }return false
+    return true;
+  }return false;
 };
 bookmarklet.nullFunction = function() {
 };
+bookmarklet.bind = function(fn, selfObj, var_args) {
+  if (!fn) {
+    throw new Error();
+  }
+
+  if (arguments.length > 2) {
+    var boundArgs = Array.prototype.slice.call(arguments, 2);
+    return function() {
+      // Prepend the bound arguments to the current arguments.
+      var newArgs = Array.prototype.slice.call(arguments);
+      Array.prototype.unshift.apply(newArgs, boundArgs);
+      return fn.apply(selfObj, newArgs);
+    };
+
+  } else {
+    return function() {
+      return fn.apply(selfObj, arguments);
+    };
+  }
+}
 bookmarklet.getHead = function(ownerDocument) {
   var head = ownerDocument.getElementsByTagName("head")[0];
   if(!head)head = ownerDocument.appendChild(ownerDocument.createElement("head"));
-  return head
+  return head;
 };
 bookmarklet.waitForScriptLoad = function(scriptLoadedCheck, onScriptLoad) {
   var setIntervalId = window.setInterval(function() {
     var r = eval(scriptLoadedCheck);
     if(r) {
       window.clearInterval(setIntervalId);
-      onScriptLoad()
+      onScriptLoad();
     }
-  }, 50)
+  }, 50);
 };
 bookmarklet.loadCSS = function(id, src, ownerDocument) {
   if(!ownerDocument.getElementById(id)) {
@@ -47,7 +68,7 @@ bookmarklet.loadCSS = function(id, src, ownerDocument) {
     s.type = "text/css";
     s.rel = "stylesheet";
     s.href = src;
-    bookmarklet.getHead(ownerDocument).appendChild(s)
+    bookmarklet.getHead(ownerDocument).appendChild(s);
   }
 };
 bookmarklet.lastTimeoutId = null;
@@ -57,7 +78,7 @@ bookmarklet.showStatus = function(statusId, message, opt_timeToShow) {
   if(!statusLabel) {
     statusLabel = document.createElement("span");
     statusLabel.id = statusId;
-    document.body.appendChild(statusLabel)
+    document.body.appendChild(statusLabel);
   }var isIE = navigator.userAgent.indexOf("MSIE") != -1;
   var position = isIE ? "absolute" : "fixed";
   statusLabel.style.cssText = "z-index: 99; font-size: 14px; font-weight: bold; " + "padding: 4px 6px 4px 6px; background: #FFF1A8; " + "position: " + position + "; top: 0";
@@ -93,85 +114,77 @@ bookmarklet.getParameter = function(url, name) {
 bookmarklet.hasActiveElementSupport = function() {
   return typeof document.activeElement != "undefined"
 };
-bookmarklet.getActiveField = function(opt_doc) {
-  var doc = opt_doc || window.document;
-  var activeElement;
-  try {
-    activeElement = doc.activeElement
-  }catch(e) {
-    return null
-  }if(!activeElement)return null;
-  if(bookmarklet.isEditableElement(activeElement))return activeElement;
-  var iframes = doc.getElementsByTagName("iframe");
-  for(var i = 0;i < iframes.length;i++)try {
-    var iframe = iframes[i];
-    var iframeDocument = iframe.contentWindow.document;
-    if(!iframeDocument)continue;
-    if((iframeDocument.designMode.toUpperCase() == "ON" || iframeDocument.body.contentEditable.toUpperCase() == "TRUE") && iframeDocument.hasFocus())return iframe;
-    var iframeActiveField = bookmarklet.getActiveField(iframeDocument);
-    if(iframeActiveField)return iframeActiveField
-  }catch(e) {
-  }return null
-};
-
-
-/**
- * @param {Element} element The element which needs to be checked.
- * @return {boolean} Whether the element is editable or not. An element is
- *     editable if it is a textarea, textbox, editable Div or editable IFrame.
- */
-bookmarklet.isEditableElement = function(element) {
-  var editable = false;
-  switch (element.tagName.toUpperCase()) {
-    case 'TEXTAREA':
-      editable = true;
-      break;
-    case 'INPUT':
-      editable = (element.type.toUpperCase() == 'TEXT');
-      break;
-    case 'DIV':
-      editable = (element.contentEditable.toUpperCase() == 'TRUE' ||
-                  element.isContentEditable);
-      break;
-    case 'IFRAME':
-      var iframedoc = element.contentDocument ||
-          element.contentWindow.document ||
-          element.document;
-      editable = iframedoc && (
-          iframedoc.designMode.toUpperCase() == 'ON' ||
-          iframedoc.body.contentEditable.toUpperCase() == 'TRUE' ||
-          iframedoc.body.isContentEditable);
-      break;
+bookmarklet.getInputTool = function(lang) {
+  if(!lang) {
+    return 'im_t13n_hi';
+  } else if(lang=='zh'){
+    return 'im_pinyin_zh_hans';
+  } else if (lang.indexOf('im_')!=0 && lang.indexOf('vkd_')!=0) {
+    return 'im_t13n_' + lang;
+  } else {
+    return lang;
   }
-  return editable;
+}
+bookmarklet.getActiveField = function(opt_doc) {
+  try {
+    var doc = opt_doc || window.document;
+    var activeElement;
+    activeElement = doc.activeElement
+    if(!activeElement)return null;
+    if(bookmarklet.isEditableElement(activeElement)){
+      return activeElement;
+    }
+    // The activeElement may be iframe element.
+    var iframedoc = activeElement.contentDocument ||
+    (activeElement.contentWindow && activeElement.contentWindow.document) ||
+    activeElement.document;
+    // Get the iframe inner active element.
+    if (iframedoc && iframedoc.activeElement != activeElement) {
+      return bookmarklet.getActiveField(iframedoc);
+    }
+  }catch(e){}
+  return null;
+};
+bookmarklet.isEditableElement = function(element) {
+  var elementName = element.tagName.toUpperCase();
+  var iframedoc;
+  return elementName == "TEXTAREA" || elementName == "INPUT" && (element.type.toUpperCase() == "TEXT" || element.type.toUpperCase() == "SEARCH")|| elementName == "DIV" && element.contentEditable.toUpperCase() == "TRUE" || elementName == "IFRAME" && (iframedoc = element.contentWindow.document) && (iframedoc.designMode.toUpperCase() == "ON" || iframedoc.body.contentEditable.toUpperCase() == "TRUE");
 };
 bookmarklet.contains = function(arr, element) {
   for(var i = 0;i < arr.length;i++)if(arr[i] === element)return true;
-  return false
-};var t13nBookmarklet = {};
-t13nBookmarklet.NAME = "t13nb";
-t13nBookmarklet.SCRIPT_BASE_URL = "http://t13n.googlecode.com/svn/trunk/blet/";
-t13nBookmarklet.CSS_BASE_URL = t13nBookmarklet.SCRIPT_BASE_URL;
-t13nBookmarklet.IMAGE_BASE_URL = "http://t13n.googlecode.com/files/";
-t13nBookmarklet.SCRIPT_URL = t13nBookmarklet.SCRIPT_BASE_URL + "rt13n.js";
-t13nBookmarklet.SCRIPT_ID = "t13ns";
-t13nBookmarklet.STATUS_ID = "t13n";
-t13nBookmarklet.MESSAGE_LOADING = "Loading Google Transliteration";
-t13nBookmarklet.MESSAGE_STILL_LOADING = "Still loading Google Transliteration";
-t13nBookmarklet.MESSAGE_LOADED = "Google Transliteration loaded";
-t13nBookmarklet.MESSAGE_ENABLED = "Google Transliteration is enabled. " + "To disable, click on the bookmarklet again";
-t13nBookmarklet.MESSAGE_DISABLED = "Google Transliteration has been disabled. " + "To enable, click on the bookmarklet again";
-t13nBookmarklet.MESSAGE_NOT_SUPPORTED = "Your browser is not supported. " + "Supported on Chrome 2+/Safari 4+/IE 6+/FF 3+";
-t13nBookmarklet.MESSAGE_USAGE = "Google Transliteration is enabled. " + "Click on any input field to start using it";t13nBookmarklet.initialized = false;
-t13nBookmarklet.loadURL = null;
-t13nBookmarklet.lang = null;
-t13nBookmarklet.control = null;
-t13nBookmarklet.backgroundTimerId = null;
-t13nBookmarklet.registeredElements = [];
-t13nBookmarklet.CSS_ID = "t13nCSS";
-t13nBookmarklet.CSS_URL = t13nBookmarklet.CSS_BASE_URL + "api.css";
+  return false;
+};
+bookmarklet.NAME = "t13nb";
+bookmarklet.SCRIPT_BASE_URL = "http://t13n.googlecode.com/svn/trunk/blet/";
+bookmarklet.CSS_BASE_URL = bookmarklet.SCRIPT_BASE_URL;
+bookmarklet.IMAGE_BASE_URL = "http://t13n.googlecode.com/files/";
+bookmarklet.SCRIPT_URL = bookmarklet.SCRIPT_BASE_URL + "bm.js";
+bookmarklet.SCRIPT_ID = "t13ns";
+bookmarklet.STATUS_ID = "t13n";
+bookmarklet.MESSAGE_LOADING = "Loading Google Input Tools";
+bookmarklet.MESSAGE_STILL_LOADING = "Still loading Google Input Tools";
+bookmarklet.MESSAGE_LOADED = "Google Input Tools loaded";
+bookmarklet.MESSAGE_ENABLED = "Google Input Tools is enabled. " + "To disable, click on the bookmarklet again";
+bookmarklet.MESSAGE_DISABLED = "Google Input Tools has been disabled. " + "To enable, click on the bookmarklet again";
+bookmarklet.MESSAGE_NOT_SUPPORTED = "Your browser is not supported. " + "Supported on Chrome 2+/Safari 4+/IE 6+/FF 3+";
+bookmarklet.MESSAGE_USAGE = "Google Input Tools is enabled. " + "Click on any input field to start using it";bookmarklet.initialized = false;
+bookmarklet.loadURL = null;
+bookmarklet.lang = null;
+bookmarklet.control = null;
+bookmarklet.menu = null;
+bookmarklet.backgroundTimerId = null;
+bookmarklet.registeredElements = [];
+bookmarklet.CSS_ID = "t13nCSS";
+bookmarklet.CSS_URL = bookmarklet.CSS_BASE_URL + "bm.css";
+bookmarklet.isInputEnabled = false;
 
-t13nBookmarklet.initBookmarklet = function() {
+bookmarklet.onFocus = function(e) {
+  bookmarklet.menu.bindElement(this);
+  bookmarklet.menu.reposition(this,
+      google.elements.inputtools.PositionType.BOTTOM_RIGHT);
+};
+
+bookmarklet.initBookmarklet = function() {
   // Workaround of b/4449128, if activeElement is not supported, use onfocus
   // handler to record the active element. We don't need onblur handler because
   // activeEnabler method can endure wrong/old active element.
@@ -183,108 +196,71 @@ t13nBookmarklet.initBookmarklet = function() {
         document.activeElement = e.target == document ? null : e.target;
     }, true);
   }
-  bookmarklet.showStatus(t13nBookmarklet.STATUS_ID, t13nBookmarklet.MESSAGE_LOADING);
-  var t13nScript = document.getElementById(t13nBookmarklet.SCRIPT_ID);
+  bookmarklet.showStatus(bookmarklet.STATUS_ID, bookmarklet.MESSAGE_LOADING);
+  var t13nScript = document.getElementById(bookmarklet.SCRIPT_ID);
   if(t13nScript) {
-    t13nBookmarklet.loadURL = t13nScript.src;
-    t13nBookmarklet.lang = bookmarklet.getParameter(t13nBookmarklet.loadURL, "l")
-  }window[t13nBookmarklet.NAME] = t13nBookmarklet.toggle;
+    bookmarklet.loadURL = t13nScript.src;
+    bookmarklet.lang = bookmarklet.getParameter(bookmarklet.loadURL, "l");
+  }window[bookmarklet.NAME] = bookmarklet.toggle;
   if(!bookmarklet.hasActiveElementSupport()) {
-    bookmarklet.showStatus(t13nBookmarklet.STATUS_ID, t13nBookmarklet.MESSAGE_NOT_SUPPORTED, 5000);
+    bookmarklet.showStatus(bookmarklet.STATUS_ID, bookmarklet.MESSAGE_NOT_SUPPORTED, 5000);
     return
-  }bookmarklet.loadScript("t13nJSAPIScript",bookmarklet.getProtocol() +
+  }
+  bookmarklet.loadScript("t13nJSAPIScript", bookmarklet.getProtocol() +
     "//www.google.com/jsapi",
     "window.google && google.load", function() {
       google.load("elements", "1", {
-          packages : "transliteration",
-          nocss : true,
+          packages : "inputtools",
+          nocss : false,
           callback : function() {
-            t13nBookmarklet.initialized = true;
-            bookmarklet.showStatus(t13nBookmarklet.STATUS_ID, t13nBookmarklet.MESSAGE_LOADED, 5000);
-            if (t13nBookmarklet.lang)
-              t13nBookmarklet.toggle()
-          }})
-  })
-
+            bookmarklet.initialized = true;
+            bookmarklet.showStatus(bookmarklet.STATUS_ID, bookmarklet.MESSAGE_LOADED, 5000);
+            if (bookmarklet.lang)
+              bookmarklet.toggle(bookmarklet.lang);
+          }});
+  });
+  bookmarklet.loadCSS(bookmarklet.CSS_ID, bookmarklet.CSS_URL, document);
 };
-t13nBookmarklet.toggle = function(opt_lang) {
-  var tbns = t13nBookmarklet;
-  tbns.lang = opt_lang || tbns.lang || "hi";
+bookmarklet.toggle = function(opt_lang) {
   if(!bookmarklet.hasActiveElementSupport()) {
-    bookmarklet.showStatus(tbns.STATUS_ID, tbns.MESSAGE_NOT_SUPPORTED, 5000);
+    bookmarklet.showStatus(bookmarklet.STATUS_ID, bookmarklet.MESSAGE_NOT_SUPPORTED, 5000);
     return
-  }if(!tbns.initialized) {
-    bookmarklet.showStatus(tbns.STATUS_ID, tbns.MESSAGE_STILL_LOADING);
+  }if(!bookmarklet.initialized) {
+    bookmarklet.showStatus(bookmarklet.STATUS_ID, bookmarklet.MESSAGE_STILL_LOADING);
     return
-  }if(!google.elements.transliteration.isBrowserCompatible()) {
-    bookmarklet.showStatus(tbns.STATUS_ID, tbns.MESSAGE_NOT_SUPPORTED, 5000);
-    return
-  }var tns = google.elements.transliteration;
-  var translitControlClass = tns.TransliterationControl;
-  if(!tbns.control) {
-    var options = {sourceLanguage:tns.LanguageCode.ENGLISH, destinationLanguage:tbns.lang, transliterationEnabled:false};
-    tbns.control = new translitControlClass(options);
-    tbns.control.addEventListener(translitControlClass.EventType.STATE_CHANGED, tbns.setElementStyle, tbns.control)
-  }tbns.control.setLanguagePair(tns.LanguageCode.ENGLISH, tbns.lang);
-  if(tbns.control.isTransliterationEnabled()) {
-    window.clearInterval(t13nBookmarklet.backgroundTimerId);
-    t13nBookmarklet.backgroundTimerId = null
-  }else {
-    t13nBookmarklet.backgroundTimerId = window.setInterval(t13nBookmarklet.activeElementEnabler, 250);
   }
-  tbns.control.toggleTransliteration();
+  if(!bookmarklet.control) {
+    bookmarklet.control = new google.elements.inputtools.InputToolsController();
+    bookmarklet.control.addInputTools([bookmarklet.getInputTool(opt_lang)]);
+    bookmarklet.menu = bookmarklet.control.showControl({'ui': 'kd', 'isFloating':true,
+      'showStatusBar': true});
+  }
+  bookmarklet.control.toggleCurrentInputTool();
+  bookmarklet.isInputEnabled = !bookmarklet.isInputEnabled;
+  if(bookmarklet.isInputEnabled) {
+    // Enable timer;
+    bookmarklet.backgroundTimerId = window.setInterval(bookmarklet.activeElementEnabler, 250);
+  }else {
+    // Disable timer;
+    window.clearInterval(bookmarklet.backgroundTimerId);
+    bookmarklet.backgroundTimerId = null;
+  }
 };
-t13nBookmarklet.activeElementEnabler = function() {
-  var tbns = t13nBookmarklet;
-  if(!tbns.control.isTransliterationEnabled())return;
+bookmarklet.activeElementEnabler = function() {
+  if(!bookmarklet.isInputEnabled)return;
   var activeField = bookmarklet.getActiveField();
   if(!activeField)return;
-  if(!bookmarklet.contains(tbns.registeredElements, activeField) && activeField.className != 'inputapi-popupeditor-input')try {
-    activeField.style.paddingLeft = 0;
-    activeField.style.paddingRight = 0;
-    var contentWidth = activeField.clientWidth;
-    activeField.style.paddingLeft = "";
-    activeField.style.paddingRight = "";
-    activeField.setAttribute("t13nContentWidth", contentWidth);
-
-    // Mark t13n is enabled via bookmarklet
+  if(!bookmarklet.contains(bookmarklet.registeredElements, activeField)) {
     activeField.setAttribute('goog_input_bookmarklet', true);
-
-    bookmarklet.loadCSS(t13nBookmarklet.CSS_ID, t13nBookmarklet.CSS_URL, document);
-    try {
-      tbns.control.makeTransliteratable([activeField])
-    }catch(e) {
-    }tbns.registeredElements.push(activeField);
-    tbns.control.enableTransliteration();
-    t13nBookmarklet.setElementStyle()
-  }catch(e) {
+    bookmarklet.control.addPageElements([activeField]);
+    bookmarklet.menu.reposition(activeField,
+      google.elements.inputtools.PositionType.BOTTOM_RIGHT)
+    bookmarklet.registeredElements.push(activeField);
+    if (activeField.addEventListener) {
+      activeField.addEventListener('focus', bookmarklet.bind(bookmarklet.onFocus, activeField), false);
+    } else {
+      activeField.attachEvent('onfocus', bookmarklet.bind(bookmarklet.onFocus, activeField), false);
+    }
   }
 };
-t13nBookmarklet.setElementStyle = function() {
-  var tbns = t13nBookmarklet;
-  for(var i = 0;i < tbns.registeredElements.length;i++) {
-    var element = tbns.registeredElements[i];
-    if(!element.parentNode)continue;
-    var oldOffsetWidth = element.offsetWidth;
-    if (element.style.backgroundImage &&
-            element.style.backgroundImage.indexOf(tbns.IMAGE_BASE_URL) == -1) {
-      continue;
-    }
-    element.style.backgroundImage = 'url("' + tbns.IMAGE_BASE_URL + tbns.lang + "_" + (tbns.control.isTransliterationEnabled() ? "e" : "d") + '.gif")';
-    element.style.backgroundRepeat = "no-repeat";
-    if(tbns.lang == "ar" || tbns.lang == "fa" || tbns.lang == "ur") {
-      element.style.backgroundPosition = "100% 0%";
-      element.style.paddingRight = "20px"
-    }else {
-      element.style.backgroundPosition = "0% 0%";
-      element.style.paddingLeft = "20px"
-    }var newOffsetWidth = element.offsetWidth;
-    var contentWidth = parseInt(element.getAttribute("t13nContentWidth"));
-    if(oldOffsetWidth != newOffsetWidth) {
-      var boxSizeDifference = newOffsetWidth - oldOffsetWidth;
-      element.style.width = contentWidth - boxSizeDifference + "px"
-    }
-  }if(tbns.control.isTransliterationEnabled())bookmarklet.showStatus(tbns.STATUS_ID, bookmarklet.getActiveField() ? tbns.MESSAGE_ENABLED : tbns.MESSAGE_USAGE, 3000);
-  else bookmarklet.showStatus(tbns.STATUS_ID, tbns.MESSAGE_DISABLED, 3000)
-};
-t13nBookmarklet.initBookmarklet();})();
+bookmarklet.initBookmarklet();})();
