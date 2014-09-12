@@ -155,7 +155,7 @@ bookmarklet.contains = function(arr, element) {
   return false;
 };
 bookmarklet.NAME = "t13nb";
-bookmarklet.SCRIPT_BASE_URL = "http://t13n.googlecode.com/svn/trunk/blet/";
+bookmarklet.SCRIPT_BASE_URL = "";
 bookmarklet.CSS_BASE_URL = bookmarklet.SCRIPT_BASE_URL;
 bookmarklet.IMAGE_BASE_URL = "http://t13n.googlecode.com/files/";
 bookmarklet.SCRIPT_URL = bookmarklet.SCRIPT_BASE_URL + "bm.js";
