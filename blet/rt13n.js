@@ -14,6 +14,30 @@
 
 (function(){
   var bookmarklet = {};
+bookmarklet.NAME = "t13nb";
+bookmarklet.SCRIPT_BASE_URL = "https://raw.githubusercontent.com/Alife/t13n/master/blet/";
+bookmarklet.CSS_BASE_URL = bookmarklet.SCRIPT_BASE_URL;
+bookmarklet.IMAGE_BASE_URL = "http://t13n.googlecode.com/files/";
+bookmarklet.SCRIPT_URL = bookmarklet.SCRIPT_BASE_URL + "bm.js";
+bookmarklet.SCRIPT_ID = "t13ns";
+bookmarklet.STATUS_ID = "t13n";
+bookmarklet.MESSAGE_LOADING = "Loading Google Input Tools";
+bookmarklet.MESSAGE_STILL_LOADING = "Still loading Google Input Tools";
+bookmarklet.MESSAGE_LOADED = "Google Input Tools loaded";
+bookmarklet.MESSAGE_ENABLED = "Google Input Tools is enabled. " + "To disable, click on the bookmarklet again";
+bookmarklet.MESSAGE_DISABLED = "Google Input Tools has been disabled. " + "To enable, click on the bookmarklet again";
+bookmarklet.MESSAGE_NOT_SUPPORTED = "Your browser is not supported. " + "Supported on Chrome 2+/Safari 4+/IE 6+/FF 3+";
+bookmarklet.MESSAGE_USAGE = "Google Input Tools is enabled. " + "Click on any input field to start using it";bookmarklet.initialized = false;
+bookmarklet.loadURL = null;
+bookmarklet.lang = null;
+bookmarklet.control = null;
+bookmarklet.menu = null;
+bookmarklet.backgroundTimerId = null;
+bookmarklet.registeredElements = [];
+bookmarklet.CSS_ID = "t13nCSS";
+bookmarklet.CSS_URL = bookmarklet.CSS_BASE_URL + "bm.css";
+bookmarklet.isInputEnabled = false;
+
   bookmarklet.loadScript = function(id, src, opt_scriptLoadedCheck, opt_onScriptLoad) {
   if(!document.getElementById(id)) {
     var s = document.createElement("script");
@@ -154,30 +178,6 @@ bookmarklet.contains = function(arr, element) {
   for(var i = 0;i < arr.length;i++)if(arr[i] === element)return true;
   return false;
 };
-bookmarklet.NAME = "t13nb";
-bookmarklet.SCRIPT_BASE_URL = "";
-bookmarklet.CSS_BASE_URL = bookmarklet.SCRIPT_BASE_URL;
-bookmarklet.IMAGE_BASE_URL = "http://t13n.googlecode.com/files/";
-bookmarklet.SCRIPT_URL = bookmarklet.SCRIPT_BASE_URL + "bm.js";
-bookmarklet.SCRIPT_ID = "t13ns";
-bookmarklet.STATUS_ID = "t13n";
-bookmarklet.MESSAGE_LOADING = "Loading Google Input Tools";
-bookmarklet.MESSAGE_STILL_LOADING = "Still loading Google Input Tools";
-bookmarklet.MESSAGE_LOADED = "Google Input Tools loaded";
-bookmarklet.MESSAGE_ENABLED = "Google Input Tools is enabled. " + "To disable, click on the bookmarklet again";
-bookmarklet.MESSAGE_DISABLED = "Google Input Tools has been disabled. " + "To enable, click on the bookmarklet again";
-bookmarklet.MESSAGE_NOT_SUPPORTED = "Your browser is not supported. " + "Supported on Chrome 2+/Safari 4+/IE 6+/FF 3+";
-bookmarklet.MESSAGE_USAGE = "Google Input Tools is enabled. " + "Click on any input field to start using it";bookmarklet.initialized = false;
-bookmarklet.loadURL = null;
-bookmarklet.lang = null;
-bookmarklet.control = null;
-bookmarklet.menu = null;
-bookmarklet.backgroundTimerId = null;
-bookmarklet.registeredElements = [];
-bookmarklet.CSS_ID = "t13nCSS";
-bookmarklet.CSS_URL = bookmarklet.CSS_BASE_URL + "bm.css";
-bookmarklet.isInputEnabled = false;
-
 bookmarklet.onFocus = function(e) {
   bookmarklet.menu.bindElement(this);
   bookmarklet.menu.reposition(this,
